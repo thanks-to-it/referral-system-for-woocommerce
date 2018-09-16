@@ -7,13 +7,13 @@
  * @author  Thanks to IT
  */
 
-namespace ThanksToIT\RSWC;
+namespace ThanksToIT\RSWC\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-if ( ! class_exists( 'ThanksToIT\RSWC\Admin_Settings' ) ) {
+if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 
 	class Admin_Settings extends \WC_Settings_Page {
 
