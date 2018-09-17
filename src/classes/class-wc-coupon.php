@@ -24,7 +24,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\WC_Coupon' ) ) {
 			return $label;
 		}
 
-		public function remove_coupon_html_if_zero_discount( $html, \WC_Coupon $coupon ) {
+		public static function remove_coupon_html_if_zero_discount( $html, \WC_Coupon $coupon ) {
 			$referral_code = new Referral_Coupon();
 			$html          = $referral_code->remove_coupon_html_if_zero_discount( $html, $coupon );
 			return $html;

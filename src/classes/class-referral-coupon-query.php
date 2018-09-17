@@ -19,13 +19,15 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Coupon\Referral_Coupon_Query' ) ) {
 
 	class Referral_Coupon_Query {
 		public function get_referral_coupons() {
+			$referral_coupon = new Referral_Coupon();
+
 			$the_query = new \WP_Query( array(
 				'post_type'      => 'shop_coupon',
 				'post_status'    => 'publish',
 				'posts_per_page' => - 1,
 				'meta_query'     => array(
 					array(
-						'key'     => 'trswc_referral_enable',
+						'key'     => $referral_coupon->postmeta['referral_enable'],
 						'value'   => 'yes',
 						'compare' => '=',
 					),
