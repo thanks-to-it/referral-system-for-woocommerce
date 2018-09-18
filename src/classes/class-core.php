@@ -10,6 +10,8 @@
 namespace ThanksToIT\RSWC;
 
 use ThanksToIT\RSWC\Admin\Admin_Settings;
+use ThanksToIT\RSWC\Admin\Referral_Coupon_Tab;
+use ThanksToIT\RSWC\Admin\Referral_Menu_Item;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,6 +22,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 	class Core {
 
 		public $plugin_info = array();
+		public $commission;
+		public $referral_coupon;
+		public $referral_codes_tab;
 
 		/**
 		 * Call this method to get singleton
@@ -30,7 +35,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			if ( $instance === false ) {
 				$instance = new static();
 			}
-
 			return $instance;
 		}
 
@@ -46,7 +50,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			$args = wp_parse_args( $args, array(
 				'path' => '' // __FILE__
 			) );
-
 			$this->plugin_info = $args;
 		}
 
@@ -60,7 +63,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 		 */
 		public function get_plugin_url() {
 			$path = $this->plugin_info['path'];
-
 			return plugin_dir_url( $path );
 		}
 
@@ -74,7 +76,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 		 */
 		public function get_plugin_dir() {
 			$path = $this->plugin_info['path'];
-
 			return untrailingslashit( plugin_dir_path( $path ) ) . DIRECTORY_SEPARATOR;;
 		}
 
@@ -91,35 +92,39 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 
 			if ( 'yes' === get_option( 'trswc_opt_enable', 'yes' ) ) {
 
+				$this->referral_coupon    = $referral_coupon = new Referral_Coupon();
+				$this->commission         = $commission = new Commission();
+				$this->referral_codes_tab = $referral_codes_tab = new Referral_Codes_Tab();
+
 				// Save referral code data from query string in wc_session
-				add_action( 'wp_loaded', array( 'ThanksToIT\RSWC\WC_Session', 'save_referral_code_data_from_query_string' ) );
+				add_action( 'wp_loaded', array( $referral_coupon, 'save_referral_code_data_in_wc_session' ) );
 
 				// Apply referral code discount programmatically
-				add_action( 'woocommerce_calculate_totals', array( 'ThanksToIT\RSWC\WC_Cart', 'apply_referral_code_discount_programmatically' ) );
+				add_action( 'woocommerce_calculate_totals', array( $referral_coupon, 'apply_discount_programmatically' ) );
 
 				// Mask coupon name with referral code
-				add_action( 'woocommerce_cart_totals_coupon_label', array( 'ThanksToIT\RSWC\WC_Coupon', 'mask_coupon_name_with_referral_code' ), 10, 2 );
+				add_action( 'woocommerce_cart_totals_coupon_label', array( $referral_coupon, 'mask_coupon_name' ), 10, 2 );
 
 				// Remove coupon html if discount is zero
-				add_filter( 'woocommerce_coupon_discount_amount_html', array( 'ThanksToIT\RSWC\WC_Coupon', 'remove_coupon_html_if_zero_discount' ), 10, 2 );
+				add_filter( 'woocommerce_coupon_discount_amount_html', array( $referral_coupon, 'remove_coupon_html_if_zero_discount' ), 10, 2 );
 
 				// Save referral code data on order creation
-				add_action( 'woocommerce_checkout_create_order', array( 'ThanksToIT\RSWC\WC_Order', 'save_referral_code_data_on_order_creation' ), 10, 2 );
-
-				// Create commission when order is completed
-				add_action( 'woocommerce_order_status_changed', array( 'ThanksToIT\RSWC\WC_Order', 'create_commission_when_order_is_completed' ), 10, 3 );
+				add_action( 'woocommerce_checkout_create_order', array( $referral_coupon, 'save_referral_code_data_on_order_creation' ), 10, 2 );
 
 				// Show referral code data on admin order
-				add_action( 'woocommerce_admin_order_data_after_order_details', array( 'ThanksToIT\RSWC\WC_Order', 'show_referral_code_data_on_admin_order' ), 10, 2 );
+				add_action( 'woocommerce_admin_order_data_after_order_details', array( $referral_coupon, 'show_referral_code_data_on_admin_order' ), 10, 2 );
 
 				// Add commission post type
-				add_action( 'init', array( 'ThanksToIT\RSWC\Post_Type', 'add_commission_post_type' ) );
+				add_action( 'init', array( $commission, 'register_post_type' ) );
+
+				// Create commission when order is completed
+				add_action( 'woocommerce_order_status_changed', array( $commission, 'create_commission_when_order_is_completed' ), 10, 3 );
 
 				// My Account > Referral Codes tab
-				add_action( 'init', array( 'ThanksToIT\RSWC\WC_My_Account', 'add_referral_codes_tab_endpoint' ) );
-				add_filter( 'query_vars', array( 'ThanksToIT\RSWC\WC_My_Account', 'add_referral_codes_tab_query_vars' ), 0 );
-				add_filter( 'woocommerce_account_menu_items', array( 'ThanksToIT\RSWC\WC_My_Account', 'add_referral_codes_tab_menu_item' ) );
-				add_action( 'woocommerce_account_' . 'referral-codes' . '_endpoint', array( 'ThanksToIT\RSWC\WC_My_Account', 'add_referral_codes_tab_content' ) );
+				add_action( 'init', array( $referral_codes_tab, 'add_endpoint' ) );
+				add_filter( 'query_vars', array( $referral_codes_tab, 'add_query_vars' ), 0 );
+				add_filter( 'woocommerce_account_menu_items', array( $referral_codes_tab, 'add_menu_item' ) );
+				add_action( 'woocommerce_account_' . 'referral-codes' . '_endpoint', array( $referral_codes_tab, 'add_content' ) );
 			}
 		}
 
@@ -129,13 +134,16 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 		 * @since 1.0.0
 		 */
 		private function handle_admin() {
+			$referral_coupon_tab = new Referral_Coupon_Tab();
+			$referral_menu_item  = new Referral_Menu_Item();
+
 			// Add referral menu item
-			add_action( 'admin_menu', array( 'ThanksToIT\RSWC\Admin\Admin_Menu', 'add_referral_page' ) );
+			add_action( 'admin_menu', array( $referral_menu_item, 'add_referral_page' ) );
 
 			// Referral tab on admin
-			add_filter( 'woocommerce_coupon_data_tabs', array( 'ThanksToIT\RSWC\Admin\WC_Coupon', 'add_coupon_referral_tab' ) );
-			add_filter( 'woocommerce_coupon_data_panels', array( 'ThanksToIT\RSWC\Admin\WC_Coupon', 'add_referral_tab_panel' ) );
-			add_filter( 'woocommerce_coupon_options_save', array( 'ThanksToIT\RSWC\Admin\WC_Coupon', 'save_referral_tab_data' ) );
+			add_filter( 'woocommerce_coupon_data_tabs', array( $referral_coupon_tab, 'add_tab' ) );
+			add_filter( 'woocommerce_coupon_data_panels', array( $referral_coupon_tab, 'add_tab_panel' ) );
+			add_filter( 'woocommerce_coupon_options_save', array( $referral_coupon_tab, 'save_tab_data' ) );
 
 			//Settings page
 			add_filter( 'woocommerce_get_settings_pages', array( $this, 'create_admin_settings' ), 15 );

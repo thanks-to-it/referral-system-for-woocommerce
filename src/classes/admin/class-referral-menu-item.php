@@ -1,6 +1,6 @@
 <?php
 /**
- * Referral System for WooCommerce - Admin Menu
+ * Referral System for WooCommerce - Referral_Menu_Item
  *
  * @version 1.0.0
  * @since   1.0.0
@@ -14,11 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Menu' ) ) {
+if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Referral_Menu_Item' ) ) {
 
-	class Admin_Menu {
-
-		public static function add_referral_page() {
+	class Referral_Menu_Item {
+		public function add_referral_page() {
 			add_menu_page(
 				__( 'Referral', 'referral-system-for-woocommerce' ),
 				__( 'Referral', 'referral-system-for-woocommerce' ),
@@ -32,4 +31,3 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Menu' ) ) {
 		}
 	}
 }
-

@@ -192,6 +192,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			$wc_coupon_id   = WC()->session->get( $this->wc_session_variables['coupon_id'] );
 			$referrer_id    = WC()->session->get( $this->wc_session_variables['referrer_id'] );
 
+			if ( ! WC()->cart->has_discount( $wc_coupon_code ) ) {
+				return;
+			}
+
 			$commission         = new Commission();
 			$total_reward_value = $commission->calculate_total_reward_value( $wc_coupon_id, $order );
 
