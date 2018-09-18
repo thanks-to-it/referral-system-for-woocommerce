@@ -37,12 +37,20 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			'coupon_code'   => '_trswc_coupon_code',
 		);
 
+		public $query_string_variables = array(
+			'referral_code' => 'referral_code'
+		);
+
 		public function apply_discount_programmatically() {
 			$referral_code = WC()->session->get( $this->wc_session_variables['referral_code'] );
 			if ( empty( $referral_code ) ) {
 				return;
 			}
 			$coupon_code = WC()->session->get( $this->wc_session_variables['coupon_code'] );
+			if ( ! $this->is_referral_coupon_valid( $coupon_code ) ) {
+				return;
+			}
+
 			if ( ! WC()->cart->has_discount( $coupon_code ) ) {
 				WC()->cart->add_discount( $coupon_code );
 			}
@@ -58,25 +66,54 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			}
 
 			$coupon_code_decoded = $this->decode( $referral_code_query_string );
-			$wc_coupon_id        = $coupon_code_decoded['coupon_id'];
-			$wc_coupon           = new \WC_Coupon( $wc_coupon_id );
-			$referrer_id         = $coupon_code_decoded['referrer_id'];
+			if ( ! $coupon_code_decoded ) {
+				return;
+			}
+
+			$wc_coupon_id = $coupon_code_decoded['coupon_id'];
+			$wc_coupon    = new \WC_Coupon( $wc_coupon_id );
+			$referrer_id  = $coupon_code_decoded['referrer_id'];
+
+			if ( ! $this->is_referral_coupon_valid( $wc_coupon->get_code() ) ) {
+				return;
+			}
 
 			WC()->session->set( $this->wc_session_variables['referral_code'], $referral_code_query_string );
 			WC()->session->set( $this->wc_session_variables['coupon_code'], $wc_coupon->get_code() );
 			WC()->session->set( $this->wc_session_variables['coupon_id'], $wc_coupon->get_id() );
 			WC()->session->set( $this->wc_session_variables['referrer_id'], $referrer_id );
 
-			wc_add_notice( __( "The referral code <strong>{$referral_code_query_string}</strong> has been successfully applied!", 'referral-system-for-woocommerce' ), 'success' );
+			//$coupon_code = WC()->session->get( $this->wc_session_variables['coupon_code'] );
 
+
+			wc_add_notice( __( "The referral code <strong>{$referral_code_query_string}</strong> has been successfully applied!", 'referral-system-for-woocommerce' ), 'success' );
 			//WC()->session->__unset( 'sess_variable_name' );
 		}
 
+		public function get_referral_coupons_query() {
+			$referral_coupon = new Referral_Coupon();
+
+			$the_query = new \WP_Query( array(
+				'post_type'      => 'shop_coupon',
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'meta_query'     => array(
+					array(
+						'key'     => $referral_coupon->postmeta['referral_enable'],
+						'value'   => 'yes',
+						'compare' => '=',
+					),
+				),
+			) );
+
+			return $the_query;
+		}
+
 		public function get_referral_code_from_query_string() {
-			if ( ! isset( $_REQUEST['referral_code'] ) ) {
+			if ( ! isset( $_REQUEST[ $this->query_string_variables['referral_code'] ] ) ) {
 				return '';
 			}
-			$referral_code_query_string = $_REQUEST['referral_code'];
+			$referral_code_query_string = $_REQUEST[ $this->query_string_variables['referral_code'] ];
 			if ( empty( $referral_code_query_string ) ) {
 				return '';
 			}
@@ -183,6 +220,23 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			return true;
 		}
 
+		public function is_referral_coupon_valid( $coupon_code, $method = 'cart' ) {
+			$coupon = new \WC_Coupon( $coupon_code );
+			if ( 'yes' !== get_post_meta( $coupon->get_id(), $this->postmeta['referral_enable'], true ) ) {
+				return false;
+			}
+
+			if ( $method == 'cart' ) {
+				$discounts      = new \WC_Discounts( WC()->cart );
+				$valid_response = $discounts->is_coupon_valid( $coupon );
+				if ( is_wp_error( $valid_response ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 		public function encode( $coupon_id, $referrer_id = - 1 ) {
 			$hashids = new \Hashids\Hashids( Encryption::get_salt(), 6, Encryption::get_alphabet() );
 			if ( $referrer_id == - 1 ) {
@@ -194,10 +248,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 		public function decode( $code ) {
 			$hashids = new \Hashids\Hashids( Encryption::get_salt(), 6, Encryption::get_alphabet() );
 			$numbers = $hashids->decode( $code );
-			return array(
-				'coupon_id'   => $numbers[0],
-				'referrer_id' => $numbers[1],
-			);
+			if ( is_array( $numbers ) && count( $numbers ) == 2 ) {
+				return array(
+					'coupon_id'   => $numbers[0],
+					'referrer_id' => $numbers[1],
+				);
+			} else {
+				return false;
+			}
 		}
 
 	}

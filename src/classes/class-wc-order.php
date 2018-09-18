@@ -30,7 +30,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\WC_Order' ) ) {
 			if ( $status_to != 'completed' ) {
 				return;
 			}
-
 			$commission = new Commission();
 			$commission->create_commission_when_order_is_completed( $order_id, $status_from, $status_to );
 		}

@@ -31,8 +31,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 		}
 
 		function add_content() {
-			$referral_coupon_query = new Referral_Coupon_Query();
-			$the_query             = $referral_coupon_query->get_referral_coupons();
+			$referral_coupon       = new Referral_Coupon();
+			$the_query             = $referral_coupon->get_referral_coupons_query();
 			//Referral_Coupon_Code::encode( $coupon->get_id(), get_current_user_id() )
 
 			echo '<h2>Referral Codes</h2>';
@@ -49,7 +49,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 						<dt>URL:</dt>
 						<dd>" .
 					     add_query_arg( array(
-						     'referral_code' => $referral_coupon_code_encoded
+						     $referral_coupon->query_string_variables['referral_code'] => $referral_coupon_code_encoded
 					     ), get_home_url() ) .
 					     "</dd>
 					</dl>
@@ -58,16 +58,17 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 				wp_reset_postdata();
 			}
 			?>
-			<style>
-				.trswc-dl{
-					margin:0;
-					padding:20px 0 12px 0;
-					border-top:1px solid rgba(0,0,0,.05);
-				}
-				.trswc-dl dd{
-					margin-bottom:10px;
-				}
-			</style>
+            <style>
+                .trswc-dl {
+                    margin: 0;
+                    padding: 20px 0 12px 0;
+                    border-top: 1px solid rgba(0, 0, 0, .05);
+                }
+
+                .trswc-dl dd {
+                    margin-bottom: 10px;
+                }
+            </style>
 			<?php
 		}
 	}

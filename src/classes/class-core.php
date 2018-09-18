@@ -92,7 +92,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			if ( 'yes' === get_option( 'trswc_opt_enable', 'yes' ) ) {
 
 				// Save referral code data from query string in wc_session
-				add_action( 'woocommerce_init', array( 'ThanksToIT\RSWC\WC_Session', 'save_referral_code_data_from_query_string' ) );
+				add_action( 'wp_loaded', array( 'ThanksToIT\RSWC\WC_Session', 'save_referral_code_data_from_query_string' ) );
 
 				// Apply referral code discount programmatically
 				add_action( 'woocommerce_calculate_totals', array( 'ThanksToIT\RSWC\WC_Cart', 'apply_referral_code_discount_programmatically' ) );
