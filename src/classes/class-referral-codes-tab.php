@@ -17,22 +17,38 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 
 	class Referral_Codes_Tab {
 		function add_endpoint() {
+			if ( ! Referrer::is_current_user_referrer() ) {
+				return;
+			}
+
 			add_rewrite_endpoint( 'referral-codes', EP_ROOT | EP_PAGES );
 		}
 
 		function add_query_vars( $vars ) {
+			if ( ! Referrer::is_current_user_referrer() ) {
+				return $vars;
+			}
+
 			$vars[] = 'referral-codes';
 			return $vars;
 		}
 
 		function add_menu_item( $items ) {
+			if ( ! Referrer::is_current_user_referrer() ) {
+				return $items;
+			}
+
 			$items['referral-codes'] = __( 'Referral Codes', 'referral-system-for-woocommerce' );
 			return $items;
 		}
 
 		function add_content() {
-			$referral_coupon       = new Referral_Coupon();
-			$the_query             = $referral_coupon->get_referral_coupons_query();
+			if ( ! Referrer::is_current_user_referrer() ) {
+				return;
+			}
+
+			$referral_coupon = new Referral_Coupon();
+			$the_query       = $referral_coupon->get_referral_coupons_query();
 			//Referral_Coupon_Code::encode( $coupon->get_id(), get_current_user_id() )
 
 			echo '<h2>Referral Codes</h2>';

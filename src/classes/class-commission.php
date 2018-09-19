@@ -24,7 +24,40 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 			'total_reward_value' => '_trswc_total_reward_value',
 			'currency'           => '_trswc_currency',
 			'referral_code'      => '_trswc_referral_code',
+			'coupon_code'        => '_trswc_coupon_code',
 		);
+
+		public function add_ui_columns( $columns ) {
+			$new_columns = array(
+				$this->postmeta['referrer_id']        => __( 'Referrer', 'referral-system-for-woocommerce' ),
+				$this->postmeta['order_id']           => __( 'Order', 'referral-system-for-woocommerce' ),
+				$this->postmeta['total_reward_value'] => __( 'Reward', 'referral-system-for-woocommerce' ),
+				$this->postmeta['referral_code']      => __( 'Referral Code', 'referral-system-for-woocommerce' ),
+			);
+			Array_Utils::array_splice_assoc( $columns, 2, 0, $new_columns );
+			return $columns;
+		}
+
+		public function add_ui_columns_content( $column, $post_id ) {
+			$column_meta_value = get_post_meta( $post_id, $column, true );
+			switch ( $column ) {
+				case $this->postmeta['referrer_id'] :
+					$referrer_id = $column_meta_value;
+					$referrer    = get_user_by( 'id', $referrer_id );
+					echo '<a href="' . get_edit_user_link( $referrer_id ) . '">' . esc_html( $referrer->user_email ) . '</a>';
+				break;
+				case $this->postmeta['order_id'] :
+					$order_url = admin_url( "post.php?post={$column_meta_value}&action=edit" );
+					echo '<a href="' . $order_url . '">' . $column_meta_value . '</a>';
+				break;
+				case $this->postmeta['total_reward_value'] :
+					echo wc_price( $column_meta_value );
+				break;
+				case $this->postmeta['referral_code'] :
+					echo '<strong>' . $column_meta_value . '</strong>';
+				break;
+			}
+		}
 
 		public function calculate_total_reward_value( $referral_coupon_id, $order ) {
 			$referral_coupon    = new Referral_Coupon();
@@ -78,18 +111,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 			return false;
 		}
 
-		public function create_commission_when_order_is_completed( $order_id, $status_from, $status_to ) {
-			if ( $status_to != 'completed' ) {
-				return;
-			}
-
+		public function create_commission_from_order( $order_id ) {
 			$referral_coupon    = new Referral_Coupon();
 			$referrer_id        = get_post_meta( $order_id, $referral_coupon->order_postmeta['referrer_id'], true );
 			$total_reward_value = get_post_meta( $order_id, $referral_coupon->order_postmeta['total_reward_value'], true );
 			$order_currency     = get_post_meta( $order_id, '_order_currency', true );
 			$referral_code      = get_post_meta( $order_id, $referral_coupon->order_postmeta['referral_code'], true );
-
-			$order = get_post( $order_id );
+			$coupon_code        = get_post_meta( $order_id, $referral_coupon->order_postmeta['coupon_code'], true );
+			$order              = get_post( $order_id );
 
 			$meta_input = array(
 				$this->postmeta['referrer_id']        => $referrer_id,
@@ -97,6 +126,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 				$this->postmeta['total_reward_value'] => $total_reward_value,
 				$this->postmeta['currency']           => $order_currency,
 				$this->postmeta['referral_code']      => $referral_code,
+				$this->postmeta['coupon_code']        => $coupon_code,
 			);
 
 			$old_commission_id = $this->get_comission_by_order_id( $order_id );
@@ -105,13 +135,17 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 					update_post_meta( $old_commission_id, $meta_key, $meta_value );
 				}
 			} else {
-				wp_insert_post( array(
-					'post_title'  => $order->post_title,
+				$commission_id = wp_insert_post( array(
+					'post_title'  => __( 'Commission', 'referral-system-for-woocommerce' ),
 					'post_type'   => $this->cpt_slug,
 					'post_date'   => $order->post_date,
 					'post_status' => 'publish',
 					'meta_input'  => $meta_input
 				), true );
+				wp_update_post( array(
+					'ID'         => $commission_id,
+					'post_title' => __( 'Commission' ) . ' ' . $commission_id
+				) );
 			}
 		}
 

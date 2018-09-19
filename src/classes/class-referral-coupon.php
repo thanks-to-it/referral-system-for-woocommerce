@@ -83,11 +83,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			WC()->session->set( $this->wc_session_variables['coupon_id'], $wc_coupon->get_id() );
 			WC()->session->set( $this->wc_session_variables['referrer_id'], $referrer_id );
 
-			//$coupon_code = WC()->session->get( $this->wc_session_variables['coupon_code'] );
-
-
 			wc_add_notice( __( "The referral code <strong>{$referral_code_query_string}</strong> has been successfully applied!", 'referral-system-for-woocommerce' ), 'success' );
-			//WC()->session->__unset( 'sess_variable_name' );
 		}
 
 		public function get_referral_coupons_query() {
@@ -181,7 +177,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			<?php
 		}
 
-		public function save_referral_code_data_on_order_creation( \WC_Order $order, $data ) {
+		public function save_referral_code_data_on_order( \WC_Order $order, $data ) {
 			$referral_code = WC()->session->get( $this->wc_session_variables['referral_code'] );
 			if ( empty( $referral_code ) ) {
 				return;
@@ -204,6 +200,15 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			$order->update_meta_data( $this->order_postmeta['coupon_id'], $wc_coupon_id );
 			$order->update_meta_data( $this->order_postmeta['referrer_id'], $referrer_id );
 			$order->update_meta_data( $this->order_postmeta['total_reward_value'], $total_reward_value );
+
+			$this->delete_referral_data_from_wc_session();
+		}
+
+		public function delete_referral_data_from_wc_session() {
+			WC()->session->__unset( $this->wc_session_variables['referrer_id'] );
+			WC()->session->__unset( $this->wc_session_variables['coupon_id'] );
+			WC()->session->__unset( $this->wc_session_variables['coupon_code'] );
+			WC()->session->__unset( $this->wc_session_variables['referral_code'] );
 		}
 
 		public function validate_referral_code( $referral_code ) {

@@ -25,6 +25,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 		public $commission;
 		public $referral_coupon;
 		public $referral_codes_tab;
+		public $referrer;
 
 		/**
 		 * Call this method to get singleton
@@ -95,6 +96,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				$this->referral_coupon    = $referral_coupon = new Referral_Coupon();
 				$this->commission         = $commission = new Commission();
 				$this->referral_codes_tab = $referral_codes_tab = new Referral_Codes_Tab();
+				$this->referrer           = $referrer = new Referrer();
 
 				// Save referral code data from query string in wc_session
 				add_action( 'wp_loaded', array( $referral_coupon, 'save_referral_code_data_in_wc_session' ) );
@@ -109,7 +111,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				add_filter( 'woocommerce_coupon_discount_amount_html', array( $referral_coupon, 'remove_coupon_html_if_zero_discount' ), 10, 2 );
 
 				// Save referral code data on order creation
-				add_action( 'woocommerce_checkout_create_order', array( $referral_coupon, 'save_referral_code_data_on_order_creation' ), 10, 2 );
+				add_action( 'woocommerce_checkout_create_order', array( $referral_coupon, 'save_referral_code_data_on_order' ), 10, 2 );
 
 				// Show referral code data on admin order
 				add_action( 'woocommerce_admin_order_data_after_order_details', array( $referral_coupon, 'show_referral_code_data_on_admin_order' ), 10, 2 );
@@ -118,13 +120,19 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				add_action( 'init', array( $commission, 'register_post_type' ) );
 
 				// Create commission when order is completed
-				add_action( 'woocommerce_order_status_changed', array( $commission, 'create_commission_when_order_is_completed' ), 10, 3 );
+				add_action( 'woocommerce_order_status_completed', array( $commission, 'create_commission_from_order' ), 10 );
+
+				// Add columns for commissions on admin
+				add_filter( "manage_{$commission->cpt_slug}_posts_columns", array( $commission, 'add_ui_columns' ) );
+				add_action( "manage_{$commission->cpt_slug}_posts_custom_column" , array( $commission, 'add_ui_columns_content' ), 10, 2 );
 
 				// My Account > Referral Codes tab
 				add_action( 'init', array( $referral_codes_tab, 'add_endpoint' ) );
 				add_filter( 'query_vars', array( $referral_codes_tab, 'add_query_vars' ), 0 );
 				add_filter( 'woocommerce_account_menu_items', array( $referral_codes_tab, 'add_menu_item' ) );
 				add_action( 'woocommerce_account_' . 'referral-codes' . '_endpoint', array( $referral_codes_tab, 'add_content' ) );
+
+				register_activation_hook( $this->plugin_info['path'], array( $referrer, 'add_roles' ) );
 			}
 		}
 
