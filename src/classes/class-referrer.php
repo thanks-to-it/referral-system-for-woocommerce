@@ -30,6 +30,15 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			}
 		}
 
+		public static function is_user_referrer( $user_id ) {
+			$current_user = get_user_by( 'ID', $user_id );
+			if ( in_array( self::$role_referrer, $current_user->roles ) ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		public $user_caps = array(
 			"read"                      => true,
 			"edit_product"              => true,

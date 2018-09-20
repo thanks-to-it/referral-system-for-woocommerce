@@ -47,7 +47,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 				return;
 			}
 			$coupon_code = WC()->session->get( $this->wc_session_variables['coupon_code'] );
-			if ( ! $this->is_referral_coupon_valid( $coupon_code ) ) {
+			$referrer_id = WC()->session->get( $this->wc_session_variables['referrer_id'] );
+			if (
+				! $this->is_referral_coupon_valid( $coupon_code ) ||
+				! Referrer::is_user_referrer( $referrer_id )
+			) {
 				return;
 			}
 
@@ -74,7 +78,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			$wc_coupon    = new \WC_Coupon( $wc_coupon_id );
 			$referrer_id  = $coupon_code_decoded['referrer_id'];
 
-			if ( ! $this->is_referral_coupon_valid( $wc_coupon->get_code() ) ) {
+			if (
+				! $this->is_referral_coupon_valid( $wc_coupon->get_code() ) ||
+				! Referrer::is_user_referrer( $referrer_id )
+			) {
 				return;
 			}
 
@@ -188,11 +195,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			$wc_coupon_id   = WC()->session->get( $this->wc_session_variables['coupon_id'] );
 			$referrer_id    = WC()->session->get( $this->wc_session_variables['referrer_id'] );
 
-			if ( ! WC()->cart->has_discount( $wc_coupon_code ) ) {
+			if (
+				! WC()->cart->has_discount( $wc_coupon_code ) ||
+				! Referrer::is_user_referrer( $referrer_id )
+			) {
 				return;
 			}
 
-			$commission         = new Commission();
+			$commission         = new Referral();
 			$total_reward_value = $commission->calculate_total_reward_value( $wc_coupon_id, $order );
 
 			$order->update_meta_data( $this->order_postmeta['referral_code'], $referral_code );

@@ -1,6 +1,6 @@
 <?php
 /**
- * Referral System for WooCommerce - Commission
+ * Referral System for WooCommerce - Referral
  *
  * @version 1.0.0
  * @since   1.0.0
@@ -13,11 +13,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
 
-if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
+if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 
-	class Commission {
+	class Referral {
 
-		public $cpt_slug = 'trswc-commission';
+		public $cpt_id = 'trswc-referral';
 		public $postmeta = array(
 			'referrer_id'        => '_trswc_referrer_id',
 			'order_id'           => '_trswc_order_id',
@@ -33,9 +33,28 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 				$this->postmeta['order_id']           => __( 'Order', 'referral-system-for-woocommerce' ),
 				$this->postmeta['total_reward_value'] => __( 'Reward', 'referral-system-for-woocommerce' ),
 				$this->postmeta['referral_code']      => __( 'Referral Code', 'referral-system-for-woocommerce' ),
+				$this->postmeta['coupon_code']        => __( 'Coupon Code', 'referral-system-for-woocommerce' ),
 			);
 			Array_Utils::array_splice_assoc( $columns, 2, 0, $new_columns );
 			return $columns;
+		}
+
+		public function get_commissions_query_from_user_id( $user_id ) {
+			$the_query = new \WP_Query( array(
+				'post_type'   => $this->cpt_id,
+				'post_status' => 'publish',
+				'fields'      => 'ids',
+				'orderby'     => 'date',
+				'order'       => 'DESC',
+				'meta_query'  => array(
+					array(
+						'key'     => $this->postmeta['referrer_id'],
+						'value'   => $user_id,
+						'compare' => '=',
+					),
+				),
+			) );
+			return $the_query;
 		}
 
 		public function add_ui_columns_content( $column, $post_id ) {
@@ -56,6 +75,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 				case $this->postmeta['referral_code'] :
 					echo '<strong>' . $column_meta_value . '</strong>';
 				break;
+				case $this->postmeta['coupon_code'] :
+					echo '<strong>' . $column_meta_value . '</strong>';
+				break;
 			}
 		}
 
@@ -67,7 +89,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 
 		public function remove_commission_by_order_id( $order_id ) {
 			$the_query = new \WP_Query( array(
-				'post_type'   => $this->cpt_slug,
+				'post_type'   => $this->cpt_id,
 				'post_status' => 'publish',
 				'fields'      => 'ids',
 				'meta_query'  => array(
@@ -87,9 +109,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 			wp_reset_postdata();
 		}
 
-		public function get_comission_by_order_id( $order_id ) {
+		public function get_referral_by_order_id( $order_id ) {
 			$the_query = new \WP_Query( array(
-				'post_type'   => $this->cpt_slug,
+				'post_type'   => $this->cpt_id,
 				'post_status' => 'publish',
 				'fields'      => 'ids',
 				'meta_query'  => array(
@@ -111,7 +133,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 			return false;
 		}
 
-		public function create_commission_from_order( $order_id ) {
+		public function create_referral_from_order( $order_id ) {
 			$referral_coupon    = new Referral_Coupon();
 			$referrer_id        = get_post_meta( $order_id, $referral_coupon->order_postmeta['referrer_id'], true );
 			$total_reward_value = get_post_meta( $order_id, $referral_coupon->order_postmeta['total_reward_value'], true );
@@ -129,42 +151,44 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 				$this->postmeta['coupon_code']        => $coupon_code,
 			);
 
-			$old_commission_id = $this->get_comission_by_order_id( $order_id );
-			if ( false !== $old_commission_id ) {
+			$old_referral_id = $this->get_referral_by_order_id( $order_id );
+			if ( false !== $old_referral_id ) {
 				foreach ( $meta_input as $meta_key => $meta_value ) {
-					update_post_meta( $old_commission_id, $meta_key, $meta_value );
+					update_post_meta( $old_referral_id, $meta_key, $meta_value );
 				}
 			} else {
-				$commission_id = wp_insert_post( array(
-					'post_title'  => __( 'Commission', 'referral-system-for-woocommerce' ),
-					'post_type'   => $this->cpt_slug,
+				$referral_id = wp_insert_post( array(
+					'post_title'  => __( 'Referral', 'referral-system-for-woocommerce' ),
+					'post_type'   => $this->cpt_id,
 					'post_date'   => $order->post_date,
 					'post_status' => 'publish',
 					'meta_input'  => $meta_input
 				), true );
 				wp_update_post( array(
-					'ID'         => $commission_id,
-					'post_title' => __( 'Commission' ) . ' ' . $commission_id
+					'ID'         => $referral_id,
+					'post_title' => __( 'Referral' ) . ' ' . $referral_id
 				) );
+				$referral_status = new Referral_Status();
+				wp_set_object_terms( $referral_id, 'unpaid', $referral_status->tax_id );
 			}
 		}
 
 		public function register_post_type() {
 			$labels = array(
-				'name'               => __( 'Commissions', 'referral-system-for-woocommerce' ),
-				'singular_name'      => __( 'Commission', 'referral-system-for-woocommerce' ),
-				'menu_name'          => __( 'Commissions', 'referral-system-for-woocommerce' ),
-				'name_admin_bar'     => __( 'Commission', 'referral-system-for-woocommerce' ),
+				'name'               => __( 'Referrals', 'referral-system-for-woocommerce' ),
+				'singular_name'      => __( 'Referral', 'referral-system-for-woocommerce' ),
+				'menu_name'          => __( 'Referrals', 'referral-system-for-woocommerce' ),
+				'name_admin_bar'     => __( 'Referral', 'referral-system-for-woocommerce' ),
 				'add_new'            => __( 'Add New', 'referral-system-for-woocommerce' ),
-				'add_new_item'       => __( 'Add New Commission', 'referral-system-for-woocommerce' ),
-				'new_item'           => __( 'New Commission', 'referral-system-for-woocommerce' ),
-				'edit_item'          => __( 'Edit Commission', 'referral-system-for-woocommerce' ),
-				'view_item'          => __( 'View Commission', 'referral-system-for-woocommerce' ),
-				'all_items'          => __( 'Commissions', 'referral-system-for-woocommerce' ),
-				'search_items'       => __( 'Search Commissions', 'referral-system-for-woocommerce' ),
-				'parent_item_colon'  => __( 'Parent Commissions:', 'referral-system-for-woocommerce' ),
-				'not_found'          => __( 'No Commissions found.', 'referral-system-for-woocommerce' ),
-				'not_found_in_trash' => __( 'No Commissions found in Trash.', 'referral-system-for-woocommerce' ),
+				'add_new_item'       => __( 'Add New Referral', 'referral-system-for-woocommerce' ),
+				'new_item'           => __( 'New Referral', 'referral-system-for-woocommerce' ),
+				'edit_item'          => __( 'Edit Referral', 'referral-system-for-woocommerce' ),
+				'view_item'          => __( 'View Referral', 'referral-system-for-woocommerce' ),
+				'all_items'          => __( 'Referrals', 'referral-system-for-woocommerce' ),
+				'search_items'       => __( 'Search Referrals', 'referral-system-for-woocommerce' ),
+				'parent_item_colon'  => __( 'Parent Referrals:', 'referral-system-for-woocommerce' ),
+				'not_found'          => __( 'No Referrals found.', 'referral-system-for-woocommerce' ),
+				'not_found_in_trash' => __( 'No Referrals found in Trash.', 'referral-system-for-woocommerce' ),
 			);
 
 			$args = array(
@@ -175,7 +199,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 				'show_ui'            => true,
 				'show_in_menu'       => 'edit.php?trswc=trswc',
 				'query_var'          => false,
-				'rewrite'            => array( 'slug' => 'commission' ),
+				'rewrite'            => array( 'slug' => 'referral' ),
 				//'capability_type'    => 'alg_mpwc_commission',
 				/*'capabilities'       => array(
 					'create_posts' => 'manage_woocommerce',
@@ -184,10 +208,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Commission' ) ) {
 				'has_archive'        => false,
 				'hierarchical'       => false,
 				'menu_position'      => null,
-				'menu_icon'          => 'dashicons-cart',
+				//'menu_icon'          => 'dashicons-cart',
+				'menu_icon'          => 'dashicons-money',
 				'supports'           => array( 'title' ),
 			);
-			register_post_type( $this->cpt_slug, $args );
+			register_post_type( $this->cpt_id, $args );
 		}
 	}
 }

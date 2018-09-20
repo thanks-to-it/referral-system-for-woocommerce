@@ -1,6 +1,6 @@
 <?php
 /**
- * Referral System for WooCommerce - My Account Tab
+ * Referral System for WooCommerce - My Account > Referral Codes Tab
  *
  * @version 1.0.0
  * @since   1.0.0
@@ -16,12 +16,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 
 	class Referral_Codes_Tab {
-		function add_endpoint() {
-			if ( ! Referrer::is_current_user_referrer() ) {
-				return;
-			}
+	    public $tab_id='referral-codes';
 
-			add_rewrite_endpoint( 'referral-codes', EP_ROOT | EP_PAGES );
+		function add_endpoint() {
+			add_rewrite_endpoint( $this->tab_id, EP_ROOT | EP_PAGES );
 		}
 
 		function add_query_vars( $vars ) {
@@ -29,7 +27,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 				return $vars;
 			}
 
-			$vars[] = 'referral-codes';
+			$vars[] = $this->tab_id;
 			return $vars;
 		}
 
@@ -38,7 +36,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 				return $items;
 			}
 
-			$items['referral-codes'] = __( 'Referral Codes', 'referral-system-for-woocommerce' );
+			$items[$this->tab_id] = __( 'Referral Codes', 'referral-system-for-woocommerce' );
 			return $items;
 		}
 
@@ -51,7 +49,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 			$the_query       = $referral_coupon->get_referral_coupons_query();
 			//Referral_Coupon_Code::encode( $coupon->get_id(), get_current_user_id() )
 
-			echo '<h2>Referral Codes</h2>';
+			//echo '<h2>Referral Codes</h2>';
 			if ( $the_query->have_posts() ) {
 				while ( $the_query->have_posts() ) {
 					$the_query->the_post();
@@ -74,17 +72,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 				wp_reset_postdata();
 			}
 			?>
-            <style>
-                .trswc-dl {
-                    margin: 0;
-                    padding: 20px 0 12px 0;
-                    border-top: 1px solid rgba(0, 0, 0, .05);
-                }
-
-                .trswc-dl dd {
-                    margin-bottom: 10px;
-                }
-            </style>
 			<?php
 		}
 	}

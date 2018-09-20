@@ -250,5 +250,36 @@
             "notices",
             "wordpress"
         ]
+    },
+    {
+        "name": "webdevstudios/taxonomy_single_term",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term.git",
+            "reference": "4fe586a68e3f0d963a1d96d76e53fe6431b00b1a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WebDevStudios/Taxonomy_Single_Term/zipball/4fe586a68e3f0d963a1d96d76e53fe6431b00b1a",
+            "reference": "4fe586a68e3f0d963a1d96d76e53fe6431b00b1a",
+            "shasum": ""
+        },
+        "time": "2018-04-17T20:18:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "description": "Removes and replaces the built-in taxonomy WordPress metabox with a radio or select metabox.",
+        "homepage": "http://webdevstudios.com/",
+        "keywords": [
+            "metabox",
+            "taxonomy",
+            "terms",
+            "wordpress"
+        ],
+        "support": {
+            "source": "https://github.com/WebDevStudios/Taxonomy_Single_Term/tree/master",
+            "issues": "https://github.com/WebDevStudios/Taxonomy_Single_Term/issues"
+        }
     }
 ]

@@ -8,6 +8,7 @@ class ComposerStaticInit269a8e07cbf91ad9def87be5bbc1ba6f
 {
     public static $files = array (
         '1609d6f3e293af2b810977796160a51d' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/functions/functions.php',
+        '47fbe3864bfe5d2b8e4bf177f64d9580' => __DIR__ . '/..' . '/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -131,11 +132,14 @@ class ComposerStaticInit269a8e07cbf91ad9def87be5bbc1ba6f
         'ThanksToIT\\RSWC\\Admin\\Referral_Coupon_Tab' => __DIR__ . '/../..' . '/src/classes/admin/class-referral-coupon-tab.php',
         'ThanksToIT\\RSWC\\Admin\\Referral_Menu_Item' => __DIR__ . '/../..' . '/src/classes/admin/class-referral-menu-item.php',
         'ThanksToIT\\RSWC\\Array_Utils' => __DIR__ . '/../..' . '/src/classes/class-array-utils.php',
-        'ThanksToIT\\RSWC\\Commission' => __DIR__ . '/../..' . '/src/classes/class-commission.php',
         'ThanksToIT\\RSWC\\Core' => __DIR__ . '/../..' . '/src/classes/class-core.php',
         'ThanksToIT\\RSWC\\Encryption' => __DIR__ . '/../..' . '/src/classes/class-encryption.php',
+        'ThanksToIT\\RSWC\\My_Account_Style' => __DIR__ . '/../..' . '/src/classes/class-my-account-style.php',
+        'ThanksToIT\\RSWC\\Referral' => __DIR__ . '/../..' . '/src/classes/class-referral.php',
         'ThanksToIT\\RSWC\\Referral_Codes_Tab' => __DIR__ . '/../..' . '/src/classes/class-referral-codes-tab.php',
         'ThanksToIT\\RSWC\\Referral_Coupon' => __DIR__ . '/../..' . '/src/classes/class-referral-coupon.php',
+        'ThanksToIT\\RSWC\\Referral_Status' => __DIR__ . '/../..' . '/src/classes/class-referral-status.php',
+        'ThanksToIT\\RSWC\\Referrals_Tab' => __DIR__ . '/../..' . '/src/classes/class-referrals-tab.php',
         'ThanksToIT\\RSWC\\Referrer' => __DIR__ . '/../..' . '/src/classes/class-referrer.php',
         'ThanksToIT\\WPAN\\Ajax' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-ajax.php',
         'ThanksToIT\\WPAN\\Display_Rules' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-display-rules.php',

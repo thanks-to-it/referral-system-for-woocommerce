@@ -2,6 +2,12 @@
   "name": "thanks-to-it/referral-system-for-woocommerce",
   "type": "wordpress-plugin",
   "description": "Referral System for Woocommerce",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/WebDevStudios/Taxonomy_Single_Term"
+    }
+  ],
   "keywords": [
     "wordpress",
     "affiliates",
@@ -23,7 +29,8 @@
     "php": ">=5.3.2",
     "composer/installers": ">=v1.2.0",
     "thanks-to-it/wp-admin-notices": "dev-master",
-    "hashids/hashids":"2.0.4"
+    "hashids/hashids":"2.0.4",
+    "webdevstudios/taxonomy_single_term":"dev-master"
   },
   "extra": {
     "installer-paths": {
@@ -41,6 +48,9 @@
       "/Tests/",
       "/test/",
       "/tests/"
+    ],
+    "files": [
+      "vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php"
     ]
   }
 }
