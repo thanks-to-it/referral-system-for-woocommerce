@@ -168,8 +168,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 					'ID'         => $referral_id,
 					'post_title' => __( 'Referral' ) . ' ' . $referral_id
 				) );
+
+				// Set as status unpaid
 				$referral_status = new Referral_Status();
 				wp_set_object_terms( $referral_id, 'unpaid', $referral_status->tax_id );
+
+				// Set as authenticity Ok
+				$authenticity = new Authenticity();
+				wp_set_object_terms( $referral_id, 'ok', $authenticity->tax_id );
 			}
 		}
 

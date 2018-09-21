@@ -35,3 +35,17 @@ $plugin->setup( array(
 if ( true === apply_filters( 'trswc_init', true ) ) {
 	$plugin->init();
 }
+
+
+
+
+
+
+
+
+add_action('wp_loaded',function(){
+	//$referrer = new \ThanksToIT\RSWC\Referrer();
+	//error_log($referrer->get_ip());
+	//$authenticity = new \ThanksToIT\RSWC\Authenticity();
+	//$authenticity->get_fraud_suspicion_info( 173 );
+});

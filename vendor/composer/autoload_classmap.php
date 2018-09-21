@@ -104,6 +104,7 @@ return array(
     'ThanksToIT\\RSWC\\Admin\\Referral_Coupon_Tab' => $baseDir . '/src/classes/admin/class-referral-coupon-tab.php',
     'ThanksToIT\\RSWC\\Admin\\Referral_Menu_Item' => $baseDir . '/src/classes/admin/class-referral-menu-item.php',
     'ThanksToIT\\RSWC\\Array_Utils' => $baseDir . '/src/classes/class-array-utils.php',
+    'ThanksToIT\\RSWC\\Authenticity' => $baseDir . '/src/classes/class-authenticity.php',
     'ThanksToIT\\RSWC\\Core' => $baseDir . '/src/classes/class-core.php',
     'ThanksToIT\\RSWC\\Encryption' => $baseDir . '/src/classes/class-encryption.php',
     'ThanksToIT\\RSWC\\My_Account_Style' => $baseDir . '/src/classes/class-my-account-style.php',

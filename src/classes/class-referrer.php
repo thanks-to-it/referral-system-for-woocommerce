@@ -21,12 +21,35 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 		public static $role_referrer_pending = 'trswc_referrer_pending';
 		public static $role_referrer_rejected = 'trswc_referrer_rejected';
 
+		public $usermeta = array(
+			'ip' => '_trswc_ip',
+		);
+
 		public static function is_current_user_referrer() {
 			$current_user = wp_get_current_user();
 			if ( in_array( self::$role_referrer, $current_user->roles ) ) {
 				return true;
 			} else {
 				return false;
+			}
+		}
+
+		function save_ip( $user_login, $user ) {
+			if ( ! self::is_user_referrer( $user->ID ) ) {
+				return;
+			}
+			update_user_meta( $user->ID, $this->usermeta['ip'], $this->get_ip() );
+		}
+
+		function get_ip() {
+			foreach ( array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' ) as $key ) {
+				if ( array_key_exists( $key, $_SERVER ) === true ) {
+					foreach ( explode( ',', $_SERVER[ $key ] ) as $ip ) {
+						if ( filter_var( $ip, FILTER_VALIDATE_IP ) !== false ) {
+							return $ip;
+						}
+					}
+				}
 			}
 		}
 

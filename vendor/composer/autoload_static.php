@@ -132,6 +132,7 @@ class ComposerStaticInit269a8e07cbf91ad9def87be5bbc1ba6f
         'ThanksToIT\\RSWC\\Admin\\Referral_Coupon_Tab' => __DIR__ . '/../..' . '/src/classes/admin/class-referral-coupon-tab.php',
         'ThanksToIT\\RSWC\\Admin\\Referral_Menu_Item' => __DIR__ . '/../..' . '/src/classes/admin/class-referral-menu-item.php',
         'ThanksToIT\\RSWC\\Array_Utils' => __DIR__ . '/../..' . '/src/classes/class-array-utils.php',
+        'ThanksToIT\\RSWC\\Authenticity' => __DIR__ . '/../..' . '/src/classes/class-authenticity.php',
         'ThanksToIT\\RSWC\\Core' => __DIR__ . '/../..' . '/src/classes/class-core.php',
         'ThanksToIT\\RSWC\\Encryption' => __DIR__ . '/../..' . '/src/classes/class-encryption.php',
         'ThanksToIT\\RSWC\\My_Account_Style' => __DIR__ . '/../..' . '/src/classes/class-my-account-style.php',

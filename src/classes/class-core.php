@@ -44,6 +44,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 		public $referral_status;
 
 		/**
+		 * @var Authenticity;
+		 */
+		public $authenticity;
+
+		/**
 		 * Call this method to get singleton
 		 * @return Core
 		 */
@@ -111,13 +116,33 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				$this->referral                = $referral = new Referral();
 				$this->referrer                = $referrer = new Referrer();
 				$this->referral_status         = $referral_status = new Referral_Status();
+				$this->authenticity            = $authenticity = new Authenticity();
 				$this->referral_status->cpt_id = $referral->cpt_id;
+				$this->authenticity->cpt_id    = $referral->cpt_id;
 				$this->handle_my_account();
 				$this->handle_referral_coupon();
 				$this->handle_referrals();
 				$this->handle_referrer();
 				$this->handle_referral_status();
+				$this->handle_authenticity();
 			}
+		}
+
+		public function handle_authenticity(){
+			$authenticity = $this->authenticity;
+
+			// Register taxonomy
+			add_action( 'init', array( $authenticity, 'register_taxonomy' ), 10 );
+
+			// Move taxonomy menu under Referral
+			add_action( 'admin_menu', array( $authenticity, 'move_taxonomy_menu' ) );
+			add_action( 'parent_file', array( $authenticity, 'highlight_taxonomy_parent_menu' ) );
+
+			// Create default terms
+			register_activation_hook( $this->plugin_info['path'], array( $authenticity, 'create_initial_terms' ) );
+
+			// Turn checkbox taxonomy into radio (https://github.com/WebDevStudios/Taxonomy_Single_Term)
+			$custom_tax_mb = new \Taxonomy_Single_Term( $authenticity->tax_id );
 		}
 
 		private function handle_referral_status() {
@@ -161,8 +186,12 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 
 		private function handle_referrer() {
 			$referrer = $this->referrer;
+
 			// Add Referrer roles on plugin activation
 			register_activation_hook( $this->plugin_info['path'], array( $referrer, 'add_roles' ) );
+
+			// Save referrer ip
+			add_action( 'wp_login', array( $referrer, 'save_ip' ),10,2 );
 		}
 
 		private function handle_referrals() {
