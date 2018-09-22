@@ -125,10 +125,19 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				$this->handle_referrer();
 				$this->handle_referral_status();
 				$this->handle_authenticity();
+				register_activation_hook( $this->plugin_info['path'], array( $this, 'update_rewrite_rules' ) );
 			}
 		}
 
-		public function handle_authenticity(){
+		public function update_rewrite_rules() {
+			$referral_codes_tab = new Referral_Codes_Tab();
+			$referral_codes_tab->add_endpoint();
+			$referrals = new Referrals_Tab();
+			$referrals->add_endpoint();
+			flush_rewrite_rules( true );
+		}
+
+		public function handle_authenticity() {
 			$authenticity = $this->authenticity;
 
 			// Register taxonomy
@@ -191,7 +200,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			register_activation_hook( $this->plugin_info['path'], array( $referrer, 'add_roles' ) );
 
 			// Save referrer ip
-			add_action( 'wp_login', array( $referrer, 'save_ip' ),10,2 );
+			add_action( 'wp_login', array( $referrer, 'save_ip' ), 10, 2 );
+
+			// Save referrer cookie
+			add_action( 'wp_login', array( $referrer, 'save_cookie' ), 10, 2 );
 		}
 
 		private function handle_referrals() {

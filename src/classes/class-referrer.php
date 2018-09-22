@@ -34,6 +34,34 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			}
 		}
 
+		public function get_cookie() {
+			$authenticity = new Authenticity();
+			if ( isset( $_COOKIE[ $authenticity->cookies['referrer_cookie'] ] ) ) {
+				return $_COOKIE[ $authenticity->cookies['referrer_cookie'] ];
+			} else {
+				return false;
+			}
+		}
+
+		public function get_referrer_id_from_cookie( $cookie ) {
+			$hashids = new \Hashids\Hashids( Encryption::get_salt(), 6, Encryption::get_alphabet() );
+			$numbers = $hashids->decode( $cookie );
+			if ( is_array( $numbers ) && count( $numbers ) == 1 ) {
+				return $numbers[0];
+			} else {
+				return false;
+			}
+		}
+
+		public function save_cookie( $user_login, $user ) {
+			if ( ! self::is_user_referrer( $user->ID ) ) {
+				return;
+			}
+			$authenticity = new Authenticity();
+			$hashids      = new \Hashids\Hashids( Encryption::get_salt(), 6, Encryption::get_alphabet() );
+			$response     = setcookie( $authenticity->cookies['referrer_cookie'], $hashids->encode( $user->ID ), time() + ( 1 * YEAR_IN_SECONDS ), COOKIEPATH, COOKIE_DOMAIN, is_ssl() );
+		}
+
 		function save_ip( $user_login, $user ) {
 			if ( ! self::is_user_referrer( $user->ID ) ) {
 				return;

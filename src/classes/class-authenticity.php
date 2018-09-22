@@ -19,6 +19,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 
 		public $tax_id = 'trswc-authenticity';
 		public $cpt_id = '';
+		public $cookies = array(
+			'referrer_cookie' => '_trswc_referrer_cookie',
+		);
 
 		public function get_fraud_suspicion_info( $order_id ) {
 			$referral_coupon = new Referral_Coupon();
@@ -26,10 +29,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 			$referrer        = new Referrer();
 
 			// Referrer info
-			$referrer_id    = get_post_meta( $order_id, $referral_coupon->order_postmeta['referrer_id'], true );
-			$referrer_user  = get_user_by( 'ID', $referrer_id );
-			$referrer_email = $referrer_user->user_email;
-			$referrer_ip    = get_user_meta( $referrer_id, $referrer->usermeta['ip'], true );
+			$referrer_id     = get_post_meta( $order_id, $referral_coupon->order_postmeta['referrer_id'], true );
+			$referrer_user   = get_user_by( 'ID', $referrer_id );
+			$referrer_email  = $referrer_user->user_email;
+			$referrer_ip     = get_user_meta( $referrer_id, $referrer->usermeta['ip'], true );
+			$referrer_cookie = $referrer->get_cookie();
 
 			// Customer info
 			$customer_email = $order->get_billing_email();
@@ -43,6 +47,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 
 			if ( $customer_ip == $referrer_ip ) {
 				$fraud_info['same_ip'] = __( 'Referral and Customer have the same IP', 'referral-system-for-woocommerce' );
+			}
+
+			if ( ! is_empty( $referrer_cookie ) ) {
+				$fraud_info['found_cookie'] = __( 'Found a Referrer Cookie', 'referral-system-for-woocommerce' );
+
+				if ( $referrer->get_referrer_id_from_cookie( $referrer_cookie ) == $referrer_id ) {
+					$fraud_info['cookie_match_referrer'] = __( 'Cookie match Referrer ID', 'referral-system-for-woocommerce' );
+				}
 			}
 
 			return $fraud_info;
