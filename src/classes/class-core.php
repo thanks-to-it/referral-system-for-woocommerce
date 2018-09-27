@@ -181,7 +181,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			add_action( 'wp_loaded', array( $referral_coupon, 'save_referral_code_data_in_wc_session' ) );
 
 			// Apply referral code discount programmatically
-			add_action( 'woocommerce_calculate_totals', array( $referral_coupon, 'apply_discount_programmatically' ) );
+			//add_action( 'woocommerce_calculate_totals', array( $referral_coupon, 'apply_discount_programmatically' ) );
+
+			add_action( 'woocommerce_before_cart_table', array( $referral_coupon, 'apply_discount_programmatically' ) );
+			add_action( 'woocommerce_before_checkout_form', array( $referral_coupon, 'apply_discount_programmatically' ) );
 
 			// Mask coupon name with referral code
 			add_action( 'woocommerce_cart_totals_coupon_label', array( $referral_coupon, 'mask_coupon_name' ), 10, 2 );

@@ -115,17 +115,17 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 				$fraud_info['same_email'] = $this->get_fraud_data_label( 'same_email' );
 			}
 
-			/*if ( $customer_ip == $referrer_ip ) {
+			if ( $customer_ip == $referrer_ip ) {
 				$fraud_info['same_ip'] = __( 'Referral and Customer have the same IP', 'referral-system-for-woocommerce' );
 			}
 
-			if ( ! is_empty( $referrer_cookie ) ) {
+			if ( ! empty( $referrer_cookie ) ) {
 				$fraud_info['found_cookie'] = __( 'Found a Referrer Cookie', 'referral-system-for-woocommerce' );
 
 				if ( $referrer->get_referrer_id_from_cookie( $referrer_cookie ) == $referrer_id ) {
 					$fraud_info['cookie_match_referrer'] = __( 'Cookie match Referrer ID', 'referral-system-for-woocommerce' );
 				}
-			}*/
+			}
 
 			return $fraud_info;
 		}
