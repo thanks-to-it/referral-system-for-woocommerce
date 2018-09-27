@@ -9,6 +9,9 @@
 
 namespace ThanksToIT\RSWC\Admin;
 
+use ThanksToIT\RSWC\Authenticity;
+use ThanksToIT\RSWC\Referral_Status;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -33,6 +36,27 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 			add_action( 'woocommerce_sections_' . $this->id, array( $this, 'output_sections' ) );
 		}
 
+		public function get_status_terms() {
+			$status = new Referral_Status();
+			$terms  = $status->get_terms( array( 'get_only' => 'slug_and_title' ) );
+			return $terms;
+		}
+
+		public function get_authenticity_terms(){
+			$status = new Authenticity();
+			$terms  = $status->get_terms( array( 'get_only' => 'slug_and_title' ) );
+			return $terms;
+		}
+
+		public function get_authenticity_admin_url() {
+			$status = new Authenticity();
+			return admin_url( "edit-tags.php?taxonomy={$status->tax_id}" );
+		}
+
+		public function get_status_admin_url() {
+			$status = new Referral_Status();
+			return admin_url( "edit-tags.php?taxonomy={$status->tax_id}" );
+		}
 
 		/**
 		 * Get sections
@@ -147,6 +171,77 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'type' => 'sectionend',
 						'id'   => 'trswc_opt_general'
+					),
+
+					// Status
+					array(
+						'name' => __( 'Status', 'referral-system-for-woocommerce' ),
+						'type' => 'title',
+						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ),
+						'id'   => 'trswc_opt_status',
+					),
+					array(
+						'type'    => 'select',
+						'id'      => 'trswc_opt_status_paid',
+						'name'    => __( 'Paid', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'After the referral has been paid', 'referral-system-for-woocommerce' ),
+						'options' => $this->get_status_terms(),
+						'class'   => 'wc-enhanced-select',
+						'default' => array('paid'),
+					),
+					array(
+						'type'    => 'select',
+						'id'      => 'trswc_opt_status_unpaid',
+						'name'    => __( 'Unpaid', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Before the referral has been paid', 'referral-system-for-woocommerce' ),
+						'options' => $this->get_status_terms(),
+						'class'   => 'wc-enhanced-select',
+						'default' => array('unpaid'),
+					),
+					array(
+						'type'    => 'select',
+						'id'      => 'trswc_opt_status_rejected',
+						'name'    => __( 'Rejected', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'If the referral is considered a fraud and is not going to be paid', 'referral-system-for-woocommerce' ),
+						'options' => $this->get_status_terms(),
+						'class'   => 'wc-enhanced-select',
+						'default' => array('rejected'),
+					),
+					array(
+						'type' => 'sectionend',
+						'id'   => 'trswc_opt_status'
+					),
+
+					// Authenticity
+					array(
+						'name' => __( 'Authenticity', 'referral-system-for-woocommerce' ),
+						'type' => 'title',
+						'desc' => sprintf(__( 'Options regarding <a href="%s">Referral Authenticity</a>, including fraud detection methods', 'referral-system-for-woocommerce' ),$this->get_authenticity_admin_url()),
+						'id'   => 'trswc_opt_authenticity',
+					),
+					array(
+						'type'    => 'select',
+						'id'      => 'trswc_opt_authenticity_reliable',
+						'name'    => __( 'Apparently Reliable', 'referral-system-for-woocommerce' ),
+						'desc'    => __( "When a referral doesn't match none of the fraud detection methods", 'referral-system-for-woocommerce' ),
+						'options' => $this->get_authenticity_terms(),
+						'class'   => 'wc-enhanced-select',
+						'default' => array('apparently-reliable'),
+					),
+					apply_filters('trswc_admin_authenticity_term_options',array()),
+					array(
+						'type'    => 'multiselect',
+						'id'      => 'trswc_opt_referral_blocking',
+						'name'    => __( 'Referral Blocking', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Prevents referrals from being created in case it matches a fraud detection method', 'referral-system-for-woocommerce' ),
+						'desc_tip'=> __( 'Leave it empty if you do not want to block referrals', 'referral-system-for-woocommerce' ),
+						'options' => array( 'same_email' => __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' ) ),
+						'class'   => 'wc-enhanced-select',
+						'default' => array('same_email'),
+					),
+					array(
+						'type' => 'sectionend',
+						'id'   => 'trswc_opt_authenticity'
 					),
 				) );
 

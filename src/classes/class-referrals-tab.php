@@ -48,6 +48,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
 			$commission = new Referral();
 			$the_query  = $commission->get_commissions_query_from_user_id( get_current_user_id() );
 			$referral_status = new Referral_Status();
+			$authenticity = new Authenticity();
 
 			//Referral_Coupon_Code::encode( $coupon->get_id(), get_current_user_id() )
 
@@ -60,6 +61,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
                     <th>Reward</th>
                     <th>Order</th>
                     <th>Status</th>
+                    <th>Authenticity</th>
                     <th>Date</th>
                     </thead>
                     <body>
@@ -67,13 +69,15 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
 						<?php
                             $custom_fields = get_post_custom( get_the_ID() );
 						    $status_terms = wp_get_post_terms( get_the_ID(), $referral_status->tax_id,array('fields'=>'names') );
+						    $auth_terms = wp_get_post_terms( get_the_ID(), $authenticity->tax_id,array('fields'=>'names') );
 						?>
                         <tr>
                             <td><?php echo $custom_fields[ $commission->postmeta['referral_code'] ][0]; ?></td>
                             <td><?php echo wc_price( $custom_fields[ $commission->postmeta['total_reward_value'] ][0] ); ?></td>
                             <td><?php echo $custom_fields[ $commission->postmeta['order_id'] ][0] ; ?></td>
                             <td><?php echo implode(', ', $status_terms); ?></td>
-                            <td><?php the_date(); ?></td>
+                            <td><?php echo implode(', ', $auth_terms); ?></td>
+                            <td><?php the_date('Y/m/d'); ?></td>
                         </tr>
 					<?php endwhile; ?>
                     </body>

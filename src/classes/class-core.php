@@ -150,6 +150,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			// Create default terms
 			register_activation_hook( $this->plugin_info['path'], array( $authenticity, 'create_initial_terms' ) );
 
+			// Show authenticity data on order
+			add_action( 'woocommerce_admin_order_data_after_order_details', array( $authenticity, 'show_admin_order_authenticity_data' ), 10, 2 );
+
 			// Turn checkbox taxonomy into radio (https://github.com/WebDevStudios/Taxonomy_Single_Term)
 			$custom_tax_mb = new \Taxonomy_Single_Term( $authenticity->tax_id );
 		}
@@ -190,7 +193,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			add_action( 'woocommerce_checkout_create_order', array( $referral_coupon, 'save_referral_code_data_on_order' ), 10, 2 );
 
 			// Show referral code data on admin order
-			add_action( 'woocommerce_admin_order_data_after_order_details', array( $referral_coupon, 'show_referral_code_data_on_admin_order' ), 10, 2 );
+			add_action( 'woocommerce_admin_order_data_after_order_details', array( $referral_coupon, 'show_admin_order_referral_code_data' ), 10, 2 );
 		}
 
 		private function handle_referrer() {

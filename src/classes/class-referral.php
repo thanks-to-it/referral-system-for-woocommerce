@@ -81,10 +81,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			}
 		}
 
-		public function calculate_total_reward_value( $referral_coupon_id, $order ) {
+		public function calculate_total_reward_value( $referral_coupon_id, \WC_Order $order, $referrer_id ) {
 			$referral_coupon    = new Referral_Coupon();
 			$fixed_value_reward = get_post_meta( $referral_coupon_id, $referral_coupon->postmeta['reward_fixed_value'], true );
-			return apply_filters( 'trswc_total_reward_value', $fixed_value_reward, $referral_coupon_id, $order );
+			return apply_filters( 'trswc_total_reward_value', $fixed_value_reward, $referral_coupon_id, $order, $referrer_id );
 		}
 
 		public function remove_commission_by_order_id( $order_id ) {
@@ -142,6 +142,18 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			$coupon_code        = get_post_meta( $order_id, $referral_coupon->order_postmeta['coupon_code'], true );
 			$order              = get_post( $order_id );
 
+			// Block referral creation
+			$authenticity       = new Authenticity();
+			$fraud_info         = get_post_meta( $order_id, $authenticity->order_postmeta['fraud_data'], true );
+			$block_referral_opt = get_option( 'trswc_opt_referral_blocking', array( 'same_email' ) );
+			if (
+				! empty( $block_referral_opt ) &&
+				! empty( $fraud_info ) &&
+				count( array_intersect_key( $block_referral_opt, $fraud_info ) ) > 0
+			) {
+				return;
+			}
+
 			$meta_input = array(
 				$this->postmeta['referrer_id']        => $referrer_id,
 				$this->postmeta['order_id']           => $order_id,
@@ -171,11 +183,13 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 
 				// Set as status unpaid
 				$referral_status = new Referral_Status();
-				wp_set_object_terms( $referral_id, 'unpaid', $referral_status->tax_id );
+				$term = $referral_status->get_unpaid_term();
+				wp_set_object_terms( $referral_id, $term->slug, $referral_status->tax_id );
 
 				// Set as authenticity Ok
 				$authenticity = new Authenticity();
-				wp_set_object_terms( $referral_id, 'ok', $authenticity->tax_id );
+				$term = $authenticity->get_reliable_term();
+				wp_set_object_terms( $referral_id, $term->slug, $authenticity->tax_id );
 			}
 		}
 

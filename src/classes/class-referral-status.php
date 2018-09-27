@@ -37,6 +37,39 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Status' ) ) {
 			);
 		}
 
+		public function get_paid_term() {
+			$term_opt      = get_option( 'trswc_opt_status_paid', array( 'paid' ) );
+			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			return $term;
+		}
+
+		public function get_unpaid_term() {
+			$term_opt      = get_option( 'trswc_opt_status_unpaid', array( 'unpaid' ) );
+			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			return $term;
+		}
+
+		public function get_rejected_term() {
+			$term_opt      = get_option( 'trswc_opt_status_rejected', array( 'rejected' ) );
+			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			return $term;
+		}
+
+		public function get_terms( $args ) {
+			$args  = wp_parse_args( $args, array(
+				'taxonomy'   => $this->tax_id,
+				'hide_empty' => false,
+			) );
+			$terms = get_terms( $args );
+			if ( isset( $args['get_only'] ) && $args['get_only'] == 'id_and_title' ) {
+				$terms = wp_list_pluck( $terms, 'name', 'term_id' );
+			}
+			if ( isset( $args['get_only'] ) && $args['get_only'] == 'slug_and_title' ) {
+				$terms = wp_list_pluck( $terms, 'name', 'slug' );
+			}
+			return $terms;
+		}
+
 		public function create_initial_terms() {
 			$this->register_taxonomy();
 			$terms = $this->get_default_terms();

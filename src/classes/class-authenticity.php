@@ -23,13 +23,83 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 			'referrer_cookie' => '_trswc_referrer_cookie',
 		);
 
-		public function get_fraud_suspicion_info( $order_id ) {
-			$referral_coupon = new Referral_Coupon();
-			$order           = wc_get_order( $order_id );
-			$referrer        = new Referrer();
+		public $order_postmeta = array(
+			'fraud_data' => '_trswc_fraud_data',
+		);
 
-			// Referrer info
-			$referrer_id     = get_post_meta( $order_id, $referral_coupon->order_postmeta['referrer_id'], true );
+		public function get_terms( $args ) {
+			$args  = wp_parse_args( $args, array(
+				'taxonomy'   => $this->tax_id,
+				'hide_empty' => false,
+			) );
+			$terms = get_terms( $args );
+			if ( isset( $args['get_only'] ) && $args['get_only'] == 'id_and_title' ) {
+				$terms = wp_list_pluck( $terms, 'name', 'term_id' );
+			}
+			if ( isset( $args['get_only'] ) && $args['get_only'] == 'slug_and_title' ) {
+				$terms = wp_list_pluck( $terms, 'name', 'slug' );
+			}
+			return $terms;
+		}
+
+		public function get_fraud_data_label( $fraud_data_id ) {
+			switch ( $fraud_data_id ) {
+				case 'same_email':
+					return __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' );
+				break;
+				case 'same_ip':
+					return __( 'Referral and Customer have the same IP', 'referral-system-for-woocommerce' );
+				break;
+				case 'found_cookie':
+					return __( 'Found a Referrer Cookie', 'referral-system-for-woocommerce' );
+				break;
+				case 'cookie_match_referrer':
+					return __( 'Cookie match Referrer ID', 'referral-system-for-woocommerce' );
+				break;
+			}
+		}
+
+		public function show_admin_order_authenticity_data( \WC_Order $order ) {
+			$referral_coupon = new Referral_Coupon();
+			$referrer_id     = get_post_meta( $order->get_id(), $referral_coupon->order_postmeta['referrer_id'], true );
+			if ( empty( $referrer_id ) ) {
+				return;
+			}
+
+			$authenticity      = new Authenticity();
+			$authenticity_data = get_post_meta( $order->get_id(), $authenticity->order_postmeta['fraud_data'], true );
+			$authenticity_data = empty( $authenticity_data ) ? array() : $authenticity_data;
+			$reliable_term          = $authenticity->get_reliable_term();
+			?>
+            <div class="order_data_column trswc-order-data-column">
+                <h3><?php _e( 'Referral Authenticity' ); ?></h3>
+				<?php if ( empty( $authenticity_data ) || count( $authenticity_data ) == 0 ): ?>
+                    <p><?php echo $reliable_term->name ?></p>
+				<?php endif; ?>
+                <ul>
+					<?php foreach ( $authenticity_data as $data ): ?>
+                        <li><?php echo $authenticity->get_fraud_data_label( $data ) ?></li>
+					<?php endforeach; ?>
+                </ul>
+            </div>
+            <style>
+                .trswc-order-data-column ul {
+                    list-style: inside;
+                    color: red;
+                }
+            </style>
+			<?php
+		}
+
+		public function save_fraud_data_on_order( \WC_Order $order, $fraud_data ) {
+			if ( ! empty( $fraud_data ) ) {
+				$order->update_meta_data( $this->order_postmeta['fraud_data'], array_keys( $fraud_data ) );
+			}
+		}
+
+		public function get_fraud_detection_data( \WC_Order $order, $referrer_id ) {
+			$referral_coupon = new Referral_Coupon();
+			$referrer        = new Referrer();
 			$referrer_user   = get_user_by( 'ID', $referrer_id );
 			$referrer_email  = $referrer_user->user_email;
 			$referrer_ip     = get_user_meta( $referrer_id, $referrer->usermeta['ip'], true );
@@ -42,10 +112,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 			$fraud_info = array();
 
 			if ( $customer_email == $referrer_email ) {
-				$fraud_info['same_email'] = __( 'Referral and Customer have the same email', 'referral-system-for-woocommerce' );
+				$fraud_info['same_email'] = $this->get_fraud_data_label( 'same_email' );
 			}
 
-			if ( $customer_ip == $referrer_ip ) {
+			/*if ( $customer_ip == $referrer_ip ) {
 				$fraud_info['same_ip'] = __( 'Referral and Customer have the same IP', 'referral-system-for-woocommerce' );
 			}
 
@@ -55,20 +125,30 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 				if ( $referrer->get_referrer_id_from_cookie( $referrer_cookie ) == $referrer_id ) {
 					$fraud_info['cookie_match_referrer'] = __( 'Cookie match Referrer ID', 'referral-system-for-woocommerce' );
 				}
-			}
+			}*/
 
 			return $fraud_info;
+		}
+
+		public function get_reliable_term() {
+			$term_opt      = get_option( 'trswc_opt_authenticity_reliable', array( 'apparently-reliable' ) );
+			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			return $term;
 		}
 
 		public function get_default_terms() {
 			return array(
 				array(
-					'slug'  => 'ok',
-					'label' => __( 'Ok', 'referral-system-for-woocommerce' ),
+					'slug'  => 'apparently-reliable',
+					'label' => __( 'Apparently Reliable', 'referral-system-for-woocommerce' ),
 				),
 				array(
 					'slug'  => 'possible-fraud',
-					'label' => __( 'Possible Fraud', 'referral-system-for-woocommerce' ),
+					'label' => __( 'Possible fraud', 'referral-system-for-woocommerce' ),
+				),
+				array(
+					'slug'  => 'fraud-alert',
+					'label' => __( 'Fraud alert', 'referral-system-for-woocommerce' ),
 				),
 			);
 		}

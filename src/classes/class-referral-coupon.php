@@ -150,7 +150,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			return $label;
 		}
 
-		public function show_referral_code_data_on_admin_order( \WC_Order $order ) {
+		public function show_admin_order_referral_code_data( \WC_Order $order ) {
 			$referrer_id = get_post_meta( $order->get_id(), $this->order_postmeta['referrer_id'], true );
 			if ( empty( $referrer_id ) ) {
 				return;
@@ -165,7 +165,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
                 <h3><?php _e( 'Referral' ); ?></h3>
                 <p>
                     <strong><?php echo __( 'Referrer', 'referral-system-for-woocommerce' ); ?>:</strong>
-                    <a href="<?php echo get_edit_user_link( $referrer_id ) ?>"><?php echo esc_html( $referrer->display_name ); ?></a> <?php echo esc_html( $referrer->user_email ); ?>
+                    <a href="<?php echo get_edit_user_link( $referrer_id ) ?>"><?php echo esc_html( $referrer->display_name ); ?></a>
+                </p>
+                <p>
+                    <strong><?php echo __( 'Referrer mail', 'referral-system-for-woocommerce' ); ?>:</strong>
+                    <?php echo esc_html( $referrer->user_email ); ?>
                 </p>
                 <p>
                     <strong><?php echo __( 'Referral Code', 'referral-system-for-woocommerce' ); ?>:</strong>
@@ -202,15 +206,23 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 				return;
 			}
 
-			$commission         = new Referral();
-			$total_reward_value = $commission->calculate_total_reward_value( $wc_coupon_id, $order );
+			// Calculate reward value
+			$referral           = new Referral();
+			$total_reward_value = $referral->calculate_total_reward_value( $wc_coupon_id, $order, $referrer_id );
 
+			// save referral coupon data on order
 			$order->update_meta_data( $this->order_postmeta['referral_code'], $referral_code );
 			$order->update_meta_data( $this->order_postmeta['coupon_code'], $wc_coupon_code );
 			$order->update_meta_data( $this->order_postmeta['coupon_id'], $wc_coupon_id );
 			$order->update_meta_data( $this->order_postmeta['referrer_id'], $referrer_id );
 			$order->update_meta_data( $this->order_postmeta['total_reward_value'], $total_reward_value );
 
+			// Save fraud data on order
+			$authenticity = new Authenticity();
+			$fraud_info = $authenticity->get_fraud_detection_data( $order, $referrer_id );
+			$authenticity->save_fraud_data_on_order( $order, $fraud_info );
+
+			// Delete referral data from wc session
 			$this->delete_referral_data_from_wc_session();
 		}
 
