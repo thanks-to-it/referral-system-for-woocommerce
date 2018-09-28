@@ -27,7 +27,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			'coupon_code'        => '_trswc_coupon_code',
 		);
 
-		public function add_ui_columns( $columns ) {
+		public function manage_ui_columns( $columns ) {
 			$new_columns = array(
 				$this->postmeta['referrer_id']        => __( 'Referrer', 'referral-system-for-woocommerce' ),
 				$this->postmeta['order_id']           => __( 'Order', 'referral-system-for-woocommerce' ),
@@ -35,18 +35,48 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 				$this->postmeta['referral_code']      => __( 'Referral Code', 'referral-system-for-woocommerce' ),
 				$this->postmeta['coupon_code']        => __( 'Coupon Code', 'referral-system-for-woocommerce' ),
 			);
+
 			Array_Utils::array_splice_assoc( $columns, 2, 0, $new_columns );
 			return $columns;
 		}
 
-		public function get_commissions_query_from_user_id( $user_id ) {
-			$the_query = new \WP_Query( array(
-				'post_type'   => $this->cpt_id,
-				'post_status' => 'publish',
-				'fields'      => 'ids',
-				'orderby'     => 'date',
-				'order'       => 'DESC',
-				'meta_query'  => array(
+		public function get_unpaid_commission_from_user_id( $user_id, $args = null ) {
+			$status        = new Referral_Status();
+			$unpaid_status = $status->get_unpaid_term();
+			$args          = wp_parse_args( $args, array(
+				'tax_query' => array(
+					'fields' => 'ids',
+					array(
+						'taxonomy' => $status->tax_id,
+						'field'    => 'slug',
+						'terms'    => $unpaid_status->slug,
+					),
+				),
+			) );
+			$unpaid_query  = $this->get_commissions_query_from_user_id( get_current_user_id(), $args );
+			return $unpaid_query;
+		}
+
+		public function get_unpaid_commissions_total_from_user_id( $user_id, $args = null ) {
+			$referral     = new Referral();
+			$unpaid_query = $this->get_unpaid_commission_from_user_id( $user_id, $args );
+			$total_unpaid = 0;
+			foreach ( $unpaid_query->posts as $referral_id ) {
+				$referral_value = get_post_meta( $referral_id, $referral->postmeta['total_reward_value'], true );
+				$total_unpaid   += $referral_value;
+			}
+			return $total_unpaid;
+		}
+
+		public function get_commissions_query_from_user_id( $user_id, $args = null ) {
+			$args      = wp_parse_args( $args, array(
+				'post_type'      => $this->cpt_id,
+				'post_status'    => 'publish',
+				'posts_per_page' => - 1,
+				'fields'         => 'ids',
+				'orderby'        => 'date',
+				'order'          => 'DESC',
+				'meta_query'     => array(
 					array(
 						'key'     => $this->postmeta['referrer_id'],
 						'value'   => $user_id,
@@ -54,10 +84,12 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 					),
 				),
 			) );
+			$the_query = new \WP_Query( $args );
 			return $the_query;
 		}
 
-		public function add_ui_columns_content( $column, $post_id ) {
+		public function manage_ui_columns_content( $column, $post_id ) {
+			//error_log($column);
 			$column_meta_value = get_post_meta( $post_id, $column, true );
 			switch ( $column ) {
 				case $this->postmeta['referrer_id'] :
@@ -79,6 +111,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 					echo '<strong>' . $column_meta_value . '</strong>';
 				break;
 			}
+
 		}
 
 		public function calculate_total_reward_value( $referral_coupon_id, \WC_Order $order, $referrer_id ) {
@@ -133,6 +166,53 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			return false;
 		}
 
+		/*function modify_list_row_actions( $actions, $post ) {
+
+			// Check for your post type.
+			if ( $post->post_type == $this->cpt_id ) {
+
+				// Build your links URL.
+				$url = admin_url( 'admin.php?page=mycpt_page&post=' . $post->ID );
+
+				// Maybe put in some extra arguments based on the post status.
+				$edit_link = add_query_arg( array( 'action' => 'edit' ), $url );
+
+				// The default $actions passed has the Edit, Quick-edit and Trash links.
+				$trash = $actions['trash'];
+
+
+				$actions = array(
+					'edit' => sprintf( '<a href="%1$s">%2$s</a>',
+						esc_url( $edit_link ),
+						esc_html( __( 'Edit', 'contact-form-7' ) ) )
+				);
+
+				// You can check if the current user has some custom rights.
+				if ( current_user_can( 'administrator', $post->ID ) ) {
+
+
+
+					// Include a nonce in this link
+					$copy_link = wp_nonce_url( add_query_arg( array( 'action' => 'copy' ), $url ), 'edit_my_cpt_nonce' );
+
+					// Add the new Copy quick link.
+					$actions = array_merge( $actions, array(
+						'copy' => sprintf( '<a href="%1$s">%2$s</a>',
+							esc_url( $copy_link ),
+							'Duplicate'
+						)
+					) );
+
+					// Re-insert thrash link preserved from the default $actions.
+					$actions['trash']=$trash;
+				}
+			}
+
+			error_log(print_r($actions,true));
+
+			return $actions;
+		}*/
+
 		public function create_referral_from_order( $order_id ) {
 			$referral_coupon    = new Referral_Coupon();
 			$referrer_id        = get_post_meta( $order_id, $referral_coupon->order_postmeta['referrer_id'], true );
@@ -183,12 +263,12 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 
 				// Set as status unpaid
 				$referral_status = new Referral_Status();
-				$term = $referral_status->get_unpaid_term();
+				$term            = $referral_status->get_unpaid_term();
 				wp_set_object_terms( $referral_id, $term->slug, $referral_status->tax_id );
 
 				// Set as authenticity Ok
 				$authenticity = new Authenticity();
-				$term = $authenticity->get_reliable_term();
+				$term         = $authenticity->get_reliable_term();
 				wp_set_object_terms( $referral_id, $term->slug, $authenticity->tax_id );
 			}
 		}

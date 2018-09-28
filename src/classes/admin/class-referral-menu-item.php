@@ -19,8 +19,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Referral_Menu_Item' ) ) {
 	class Referral_Menu_Item {
 		public function add_referral_page() {
 			add_menu_page(
-				__( 'Referral', 'referral-system-for-woocommerce' ),
-				__( 'Referral', 'referral-system-for-woocommerce' ),
+				__( 'Referrals', 'referral-system-for-woocommerce' ),
+				__( 'Referrals', 'referral-system-for-woocommerce' ),
 				'manage_options',
 				//'edit.php?post_type=trswc-commission',
 				'edit.php?trswc=trswc',

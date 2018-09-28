@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'ThanksToIT\RSWC\My_Account_Style' ) ) {
 
 	class My_Account_Style {
-		public static function add_Style() {
+		public static function add_style() {
 			?>
             <style>
                 .trswc-dl {

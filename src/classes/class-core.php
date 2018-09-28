@@ -154,7 +154,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			add_action( 'woocommerce_admin_order_data_after_order_details', array( $authenticity, 'show_admin_order_authenticity_data' ), 10, 2 );
 
 			// Turn checkbox taxonomy into radio (https://github.com/WebDevStudios/Taxonomy_Single_Term)
-			$custom_tax_mb = new \Taxonomy_Single_Term( $authenticity->tax_id );
+			//$custom_tax_mb = new \Taxonomy_Single_Term( $authenticity->tax_id );
 		}
 
 		private function handle_referral_status() {
@@ -171,7 +171,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			register_activation_hook( $this->plugin_info['path'], array( $referral_status, 'create_initial_terms' ) );
 
 			// Turn checkbox taxonomy into radio (https://github.com/WebDevStudios/Taxonomy_Single_Term)
-			$custom_tax_mb = new \Taxonomy_Single_Term( $referral_status->tax_id );
+			//$custom_tax_mb = new \Taxonomy_Single_Term( $referral_status->tax_id );
 		}
 
 		private function handle_referral_coupon() {
@@ -222,8 +222,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			add_action( 'woocommerce_order_status_completed', array( $referral, 'create_referral_from_order' ), 10 );
 
 			// Add columns for commissions on admin
-			add_filter( "manage_{$referral->cpt_id}_posts_columns", array( $referral, 'add_ui_columns' ) );
-			add_action( "manage_{$referral->cpt_id}_posts_custom_column", array( $referral, 'add_ui_columns_content' ), 10, 2 );
+			add_filter( "manage_{$referral->cpt_id}_posts_columns", array( $referral, 'manage_ui_columns' ) );
+			add_action( "manage_{$referral->cpt_id}_posts_custom_column", array( $referral, 'manage_ui_columns_content' ), 10, 2 );
+			add_action( "manage_{$referral->cpt_id}_posts_column", array( $referral, 'manage_ui_columns_content' ), 10, 2 );
+
+			//add_filter( 'post_row_actions', array( $referral, 'modify_list_row_actions' ), 10, 2 );
 		}
 
 		private function handle_my_account() {
@@ -234,15 +237,17 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			add_filter( 'query_vars', array( $referral_codes_tab, 'add_query_vars' ), 0 );
 			add_filter( 'woocommerce_account_menu_items', array( $referral_codes_tab, 'add_menu_item' ) );
 			add_action( 'woocommerce_account_' . $referral_codes_tab->tab_id . '_endpoint', array( $referral_codes_tab, 'add_content' ) );
+			add_filter( 'the_title', array( $referral_codes_tab, 'handle_endpoint_title' ) );
 
 			// My Account > Referral Codes tab
-			$commissions_tab = new Referrals_Tab();
-			add_action( 'init', array( $commissions_tab, 'add_endpoint' ) );
-			add_filter( 'query_vars', array( $commissions_tab, 'add_query_vars' ), 0 );
-			add_filter( 'woocommerce_account_menu_items', array( $commissions_tab, 'add_menu_item' ) );
-			add_action( 'woocommerce_account_' . $commissions_tab->tab_id . '_endpoint', array( $commissions_tab, 'add_content' ) );
+			$referrals_tab = new Referrals_Tab();
+			add_action( 'init', array( $referrals_tab, 'add_endpoint' ) );
+			add_filter( 'query_vars', array( $referrals_tab, 'add_query_vars' ), 0 );
+			add_filter( 'woocommerce_account_menu_items', array( $referrals_tab, 'add_menu_item' ) );
+			add_action( 'woocommerce_account_' . $referrals_tab->tab_id . '_endpoint', array( $referrals_tab, 'add_content' ) );
+			add_filter( 'the_title', array( $referrals_tab, 'handle_endpoint_title' ) );
 
-			add_action( 'woocommerce_before_account_navigation', array( 'ThanksToIT\RSWC\My_Account_Style', 'add_Style' ) );
+			add_action( 'woocommerce_before_account_navigation', array( 'ThanksToIT\RSWC\My_Account_Style', 'add_style' ) );
 		}
 
 		/**

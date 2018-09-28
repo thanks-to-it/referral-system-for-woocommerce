@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="d0816300-61f1-41f2-8a45-b281a9b228e2" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/class-authenticity.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-authenticity.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/admin/class-referral-coupon-tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/admin/class-referral-coupon-tab.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/admin/class-referral-menu-item.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/admin/class-referral-menu-item.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/class-core.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-core.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/classes/class-referral-coupon.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-referral-coupon.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/class-my-account-style.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-my-account-style.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/class-referral-codes-tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-referral-codes-tab.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/class-referral.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-referral.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/classes/class-referrals-tab.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-referrals-tab.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,14 +27,14 @@
     <session id="255089093">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="9" />
-          <entry key="project.open.time.0" value="10" />
+          <entry key="project.closed" value="10" />
+          <entry key="project.open.time.0" value="11" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="6" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="20" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="22" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -38,108 +42,51 @@
           <entry key="class-admin-settings" value="1" />
           <entry key="class-referral-coupon" value="1" />
           <entry key="json" value="4" />
-          <entry key="php" value="305" />
+          <entry key="php" value="320" />
           <entry key="yml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="4" />
-          <entry key="PHP" value="305" />
+          <entry key="PHP" value="320" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="YAML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="171" />
+          <entry key="dummy" value="184" />
           <entry key="json" value="190" />
-          <entry key="php" value="25395" />
+          <entry key="php" value="26776" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="64" />
           <entry key="JSON" value="190" />
-          <entry key="PHP" value="25331" />
-          <entry key="PLAIN_TEXT" value="171" />
+          <entry key="PHP" value="26712" />
+          <entry key="PLAIN_TEXT" value="184" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/classes/class-core.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="192" column="141" lean-forward="true" selection-start-line="192" selection-start-column="141" selection-end-line="192" selection-end-column="141" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/classes/class-referrals-tab.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="78" column="68" selection-start-line="78" selection-start-column="68" selection-end-line="78" selection-end-column="68" />
+            <state relative-caret-position="480">
+              <caret line="78" column="54" lean-forward="true" selection-start-line="78" selection-start-column="54" selection-end-line="78" selection-end-column="54" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/classes/class-array-utils.php">
+        <entry file="file://$PROJECT_DIR$/src/classes/class-referral.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/classes/class-authenticity.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="121" column="42" selection-start-line="121" selection-start-column="26" selection-end-line="121" selection-end-column="42" />
-              <folding>
-                <element signature="e#6#140#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/classes/class-referral-coupon.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../woocommerce/includes/class-wc-coupon.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="829" column="20" selection-start-line="829" selection-start-column="20" selection-end-line="829" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../woocommerce/includes/wc-coupon-functions.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="54" column="9" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../woocommerce/includes/class-wc-discounts.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="607" column="20" lean-forward="true" selection-start-line="607" selection-start-column="20" selection-end-line="607" selection-end-column="20" />
+            <state relative-caret-position="243">
+              <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -148,8 +95,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>remove_coupon_html_if_zero_discount</find>
-      <find>add_commission</find>
       <find>add_commission_post_type</find>
       <find>add_filter</find>
       <find>create_commission_when_order_is_completed</find>
@@ -178,6 +123,8 @@
       <find>term(</find>
       <find>trswc_opt_authenticity_reliable</find>
       <find>aply</find>
+      <find>tab</find>
+      <find>referrals_tab</find>
     </findStrings>
     <replaceStrings>
       <replace>RSWC</replace>
@@ -215,7 +162,6 @@
         <option value="$PROJECT_DIR$/src/classes/my-account/class-referral-codes-tab.php" />
         <option value="$PROJECT_DIR$/src/classes/class-referral-code.php" />
         <option value="$PROJECT_DIR$/src/classes/class-post-type.php" />
-        <option value="$PROJECT_DIR$/src/classes/admin/class-referral-coupon-tab.php" />
         <option value="$PROJECT_DIR$/src/classes/class-referral-coupon-query.php" />
         <option value="$PROJECT_DIR$/src/classes/hooks/class-wp-hooks.php" />
         <option value="$PROJECT_DIR$/src/classes/class-wc-cart.php" />
@@ -235,8 +181,6 @@
         <option value="$PROJECT_DIR$/src/classes/class-commission.php" />
         <option value="$PROJECT_DIR$/src/classes/class-commissions-tab.php" />
         <option value="$PROJECT_DIR$/src/classes/class-my-account-style.php" />
-        <option value="$PROJECT_DIR$/src/classes/class-referral-codes-tab.php" />
-        <option value="$PROJECT_DIR$/src/classes/admin/class-referral-menu-item.php" />
         <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/src/classes/class-referral-status-tax.php" />
         <option value="$PROJECT_DIR$/src/classes/class-authenticity-tax.php" />
@@ -244,12 +188,15 @@
         <option value="$PROJECT_DIR$/referral-system-for-woocommerce.php" />
         <option value="$PROJECT_DIR$/src/classes/class-referrer.php" />
         <option value="$PROJECT_DIR$/src/classes/class-referral-status.php" />
-        <option value="$PROJECT_DIR$/src/classes/class-referral.php" />
         <option value="$PROJECT_DIR$/src/classes/admin/class-admin-settings.php" />
-        <option value="$PROJECT_DIR$/src/classes/class-referrals-tab.php" />
         <option value="$PROJECT_DIR$/src/classes/class-authenticity.php" />
         <option value="$PROJECT_DIR$/src/classes/class-referral-coupon.php" />
+        <option value="$PROJECT_DIR$/src/classes/admin/class-referral-menu-item.php" />
+        <option value="$PROJECT_DIR$/src/classes/class-referral-codes-tab.php" />
         <option value="$PROJECT_DIR$/src/classes/class-core.php" />
+        <option value="$PROJECT_DIR$/src/classes/admin/class-referral-coupon-tab.php" />
+        <option value="$PROJECT_DIR$/src/classes/class-referrals-tab.php" />
+        <option value="$PROJECT_DIR$/src/classes/class-referral.php" />
       </list>
     </option>
   </component>
@@ -372,11 +319,13 @@
       <workItem from="1537577635232" duration="2868000" />
       <workItem from="1537639552509" duration="622000" />
       <workItem from="1537999602834" duration="17276000" />
+      <workItem from="1538067201022" duration="207000" />
+      <workItem from="1538097844644" duration="6771000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124955000" />
+    <option name="totallyTimeSpent" value="131933000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -391,7 +340,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24520256" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25053304" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -404,7 +353,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.329718" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.329718" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.329718" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -486,13 +435,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/classes/class-commission-ui.php" />
-    <entry file="file://$PROJECT_DIR$/src/classes/admin/class-referral-coupon-tab.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="46" column="106" selection-start-line="46" selection-start-column="73" selection-end-line="46" selection-end-column="106" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../woocommerce/includes/wc-conditional-functions.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
@@ -504,13 +446,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
           <caret line="35" column="65" selection-start-line="35" selection-start-column="65" selection-end-line="35" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/admin/class-referral-menu-item.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -571,20 +506,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/class-referral-codes-tab.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="17" column="10" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/class-referral.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="154" column="13" lean-forward="true" selection-start-line="154" selection-start-column="13" selection-end-line="154" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/classes/class-referral-status.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="515">
@@ -596,9 +517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="312">
           <caret line="223" column="69" selection-start-line="223" selection-start-column="38" selection-end-line="223" selection-end-column="69" />
-          <folding>
-            <element signature="e#165#198#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -616,13 +534,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/class-referrals-tab.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="78" column="68" selection-start-line="78" selection-start-column="68" selection-end-line="78" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/classes/class-array-utils.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -630,17 +541,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../woocommerce/includes/class-wc-discounts.php">
+    <entry file="file://$PROJECT_DIR$/src/classes/class-referral-coupon.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="607" column="20" lean-forward="true" selection-start-line="607" selection-start-column="20" selection-end-line="607" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../woocommerce/includes/wc-coupon-functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="54" column="9" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
+        <state relative-caret-position="190">
+          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -651,10 +555,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/class-referral-coupon.php">
+    <entry file="file://$PROJECT_DIR$/../woocommerce/includes/wc-coupon-functions.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
+        <state relative-caret-position="197">
+          <caret line="54" column="9" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../woocommerce/includes/class-wc-discounts.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="607" column="20" selection-start-line="607" selection-start-column="20" selection-end-line="607" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -670,8 +581,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/classes/class-core.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="192" column="141" lean-forward="true" selection-start-line="192" selection-start-column="141" selection-end-line="192" selection-end-column="141" />
+        <state relative-caret-position="264">
+          <caret line="142" column="32" lean-forward="true" selection-start-line="142" selection-start-column="32" selection-end-line="142" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/class-referral-codes-tab.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="40" column="9" lean-forward="true" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/admin/class-referral-menu-item.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="256">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/admin/class-referral-coupon-tab.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="736">
+          <caret line="64" column="46" selection-start-line="64" selection-start-column="46" selection-end-line="64" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/class-referral.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="48" column="26" lean-forward="true" selection-start-line="48" selection-start-column="26" selection-end-line="48" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/class-referrals-tab.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="78" column="54" lean-forward="true" selection-start-line="78" selection-start-column="54" selection-end-line="78" selection-end-column="54" />
         </state>
       </provider>
     </entry>

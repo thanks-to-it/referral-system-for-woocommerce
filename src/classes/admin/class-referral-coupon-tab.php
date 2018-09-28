@@ -60,6 +60,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Referral_Coupon_Tab' ) ) {
 					?>
                 </div>
             </div>
+            <style>
+                .trswc_tab.referral_coupon_data a::before{
+                    content:"\f526" !important;
+                }
+            </style>
 			<?php
 		}
 

@@ -31,6 +31,15 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 			return $vars;
 		}
 
+		public function handle_endpoint_title( $title ) {
+			global $wp_query;
+			$is_endpoint = isset( $wp_query->query_vars[ $this->tab_id ] );
+			if ( $is_endpoint && ! is_admin() && is_main_query() && in_the_loop() && is_account_page() ) {
+				$title = __( 'Referral Codes', 'referral-system-for-woocommerce' );
+			}
+			return $title;
+		}
+
 		function add_menu_item( $items ) {
 			if ( ! Referrer::is_current_user_referrer() ) {
 				return $items;
