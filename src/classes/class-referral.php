@@ -229,7 +229,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			if (
 				! empty( $block_referral_opt ) &&
 				! empty( $fraud_info ) &&
-				count( array_intersect_key( $block_referral_opt, $fraud_info ) ) > 0
+				count( array_intersect( $block_referral_opt, $fraud_info ) ) > 0
 			) {
 				return;
 			}
@@ -266,10 +266,24 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 				$term            = $referral_status->get_unpaid_term();
 				wp_set_object_terms( $referral_id, $term->slug, $referral_status->tax_id );
 
-				// Set as authenticity Ok
+				$this->set_referral_authenticity( $fraud_info, $referral_id );
+			}
+		}
+
+		public function set_referral_authenticity( $fraud_info, $referral_id ) {
+			if ( empty( $fraud_info ) || count( $fraud_info ) == 0 || $fraud_info === false ) {
 				$authenticity = new Authenticity();
 				$term         = $authenticity->get_reliable_term();
 				wp_set_object_terms( $referral_id, $term->slug, $authenticity->tax_id );
+			} else {
+				$authenticity = new Authenticity();
+				foreach ( $fraud_info as $fraud_id) {
+					$term_slug = get_option( 'trswc_opt_auto_auth_' . $fraud_id, 'possible-fraud' );
+					$term = get_term_by( 'slug', $term_slug, $authenticity->tax_id );
+					$terms = wp_get_post_terms( $referral_id, $authenticity->tax_id, array( 'fields' => 'ids' ) );
+					$terms[]=$term->term_id;
+					wp_set_object_terms( $referral_id, $terms, $authenticity->tax_id );
+				}
 			}
 		}
 

@@ -53,7 +53,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			}
 		}
 
-		public function save_cookie( $user_login, $user ) {
+		public function save_cookie( $user_login, \WP_User $user ) {
 			if ( ! self::is_user_referrer( $user->ID ) ) {
 				return;
 			}
@@ -101,7 +101,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			"edit_published_products"   => true,
 			"assign_product_terms"      => true,
 			'level_0'                   => true,
-			'edit_alg_mpwc_commissions' => true,
+			//'edit_alg_mpwc_commissions' => true,
 			"edit_shop_orders"          => false,
 			'edit_others_shop_orders'   => false,
 			'read_shop_order'           => false

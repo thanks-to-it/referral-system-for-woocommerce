@@ -47,10 +47,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 				return;
 			}
 			$coupon_code = WC()->session->get( $this->wc_session_variables['coupon_code'] );
+			$coupon_id   = WC()->session->get( $this->wc_session_variables['coupon_id'] );
 			$referrer_id = WC()->session->get( $this->wc_session_variables['referrer_id'] );
 			if (
 				! Referrer::is_user_referrer( $referrer_id ) ||
-				! $this->is_referral_coupon_valid( $coupon_code )
+				! $this->is_referral_coupon_valid( $coupon_id )
 			) {
 				return;
 			}
@@ -168,7 +169,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
                     <a href="<?php echo get_edit_user_link( $referrer_id ) ?>"><?php echo esc_html( $referrer->display_name ); ?></a>
                 </p>
                 <p>
-                    <strong><?php echo __( 'Referrer mail', 'referral-system-for-woocommerce' ); ?>:</strong>
+                    <strong><?php echo __( 'Referrer email', 'referral-system-for-woocommerce' ); ?>:</strong>
                     <?php echo esc_html( $referrer->user_email ); ?>
                 </p>
                 <p>
@@ -251,8 +252,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			return true;
 		}
 
-		public function is_referral_coupon_valid( $coupon_code, $method = 'wc_discounts' ) {
-			$coupon = new \WC_Coupon( $coupon_code );
+		public function is_referral_coupon_valid( $coupon_id, $method = 'wc_discounts' ) {
+			$coupon = new \WC_Coupon( $coupon_id );
 			if ( 'yes' !== get_post_meta( $coupon->get_id(), $this->postmeta['referral_enable'], true ) ) {
 				return false;
 			}

@@ -142,6 +142,7 @@ class ComposerStaticInit269a8e07cbf91ad9def87be5bbc1ba6f
         'ThanksToIT\\RSWC\\Referral_Status' => __DIR__ . '/../..' . '/src/classes/class-referral-status.php',
         'ThanksToIT\\RSWC\\Referrals_Tab' => __DIR__ . '/../..' . '/src/classes/class-referrals-tab.php',
         'ThanksToIT\\RSWC\\Referrer' => __DIR__ . '/../..' . '/src/classes/class-referrer.php',
+        'ThanksToIT\\RSWC\\Template' => __DIR__ . '/../..' . '/src/classes/class-template.php',
         'ThanksToIT\\WPAN\\Ajax' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-ajax.php',
         'ThanksToIT\\WPAN\\Display_Rules' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-display-rules.php',
         'ThanksToIT\\WPAN\\Javascript' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-javascript.php',

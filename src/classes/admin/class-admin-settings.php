@@ -34,6 +34,59 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 			add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
 			add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
 			add_action( 'woocommerce_sections_' . $this->id, array( $this, 'output_sections' ) );
+
+			add_filter( 'woocommerce_get_settings_' . 'trswc', array( $this, 'add_fraud_detection_options' ) );
+			add_filter( 'woocommerce_get_settings_' . 'trswc', array( $this, 'add_authenticity_options' ) );
+		}
+
+		public function add_authenticity_options( $options ) {
+			$detection_index = wp_list_filter( $options, array( 'type' => 'sectionend', 'id' => 'trswc_opt_authenticity' ) );
+			reset( $detection_index );
+			$first_key = key( $detection_index );
+
+			$authenticity = new Authenticity();
+			//$methods       = $authenticity->get_fraud_detection_methods();
+			$valid_methods = $this->get_valid_fraud_methods();
+			$new_methods   = array();
+			foreach ( $valid_methods as $valid_method_id => $valid_method_friendly_id ) {
+				$method        = $authenticity->get_fraud_detection_method( $valid_method_id );
+				$new_option    = array(
+					'name'    => $valid_method_friendly_id,
+					'type'    => 'select',
+					'class'   => 'wc-enhanced-select',
+					'options' => $authenticity->get_terms( array( 'get_only' => 'slug_and_title' ) ),
+					'default' => 'possible-fraud',
+					'desc'    => $method['description'],
+					'id'      => 'trswc_opt_auto_auth_' . $valid_method_id,
+				);
+				$new_methods[] = $new_option;
+			}
+
+			array_splice( $options, $first_key, 0, $new_methods );
+			return $options;
+		}
+
+		public function add_fraud_detection_options( $options ) {
+			$detection_index = wp_list_filter( $options, array( 'type' => 'sectionend', 'id' => 'trswc_opt_fraud_detection_methods' ) );
+			reset( $detection_index );
+			$first_key = key( $detection_index );
+
+			$authenticity = new Authenticity();
+			$methods      = $authenticity->get_fraud_detection_methods();
+			$new_methods  = array();
+			foreach ( $methods as $method ) {
+				$new_option    = array(
+					'name'    => $method['friendly_id'],
+					'type'    => 'checkbox',
+					'default' => 'yes',
+					'desc'    => $method['description'],
+					'id'      => 'trswc_opt_fraud_method_' . $method['id'],
+				);
+				$new_methods[] = $new_option;
+			}
+
+			array_splice( $options, $first_key, 0, $new_methods );
+			return $options;
 		}
 
 		public function get_status_terms() {
@@ -42,7 +95,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 			return $terms;
 		}
 
-		public function get_authenticity_terms(){
+		public function get_authenticity_terms() {
 			$status = new Authenticity();
 			$terms  = $status->get_terms( array( 'get_only' => 'slug_and_title' ) );
 			return $terms;
@@ -71,6 +124,19 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 			);
 
 			return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
+		}
+
+		public function get_valid_fraud_methods() {
+			$authenticity  = new Authenticity();
+			$methods       = $authenticity->get_fraud_detection_methods();
+			$valid_methods = array();
+			foreach ( $methods as $method ) {
+				$method_opt = get_option( 'trswc_opt_fraud_method_' . $method['id'], 'yes' );
+				if ( 'yes' === $method_opt ) {
+					$valid_methods[ $method['id'] ] = $method['friendly_id'];
+				}
+			}
+			return $valid_methods;
 		}
 
 		/**
@@ -169,6 +235,16 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 						'default' => 'yes',
 					),
 					array(
+						'type'     => 'multiselect',
+						'id'       => 'trswc_opt_referral_blocking',
+						'name'     => __( 'Referral Blocking', 'referral-system-for-woocommerce' ),
+						'desc'     => __( 'Prevents a referral from being created in case it matches a fraud detection method', 'referral-system-for-woocommerce' ),
+						'desc_tip' => __( 'Leave it empty if you do not want to block referrals', 'referral-system-for-woocommerce' ),
+						'options'  => $this->get_valid_fraud_methods(),
+						'class'    => 'wc-enhanced-select',
+						'default'  => array( 'same_email' ),
+					),
+					array(
 						'type' => 'sectionend',
 						'id'   => 'trswc_opt_general'
 					),
@@ -177,67 +253,68 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'name' => __( 'Status', 'referral-system-for-woocommerce' ),
 						'type' => 'title',
-						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ),
+						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>.', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ) . '<br />' . __( 'You are free to create as many Status you want, but at least 3 are required (paid,unpaid,rejected)', 'referral-system-for-woocommerce' ),
 						'id'   => 'trswc_opt_status',
 					),
 					array(
 						'type'    => 'select',
 						'id'      => 'trswc_opt_status_paid',
 						'name'    => __( 'Paid', 'referral-system-for-woocommerce' ),
-						'desc'    => __( 'After the referral has been paid', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'After a referral has been paid', 'referral-system-for-woocommerce' ),
 						'options' => $this->get_status_terms(),
 						'class'   => 'wc-enhanced-select',
-						'default' => array('paid'),
+						'default' => array( 'paid' ),
 					),
 					array(
 						'type'    => 'select',
 						'id'      => 'trswc_opt_status_unpaid',
 						'name'    => __( 'Unpaid', 'referral-system-for-woocommerce' ),
-						'desc'    => __( 'Before the referral has been paid', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Before a referral has been paid', 'referral-system-for-woocommerce' ),
 						'options' => $this->get_status_terms(),
 						'class'   => 'wc-enhanced-select',
-						'default' => array('unpaid'),
+						'default' => array( 'unpaid' ),
 					),
 					array(
 						'type'    => 'select',
 						'id'      => 'trswc_opt_status_rejected',
 						'name'    => __( 'Rejected', 'referral-system-for-woocommerce' ),
-						'desc'    => __( 'If the referral is considered a fraud and is not going to be paid', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'If a referral is considered a fraud and is not going to be paid', 'referral-system-for-woocommerce' ),
 						'options' => $this->get_status_terms(),
 						'class'   => 'wc-enhanced-select',
-						'default' => array('rejected'),
+						'default' => array( 'rejected' ),
 					),
 					array(
 						'type' => 'sectionend',
 						'id'   => 'trswc_opt_status'
 					),
 
+					// Fraud detection methods
+					array(
+						'name' => __( 'Fraud Detection methods', 'referral-system-for-woocommerce' ),
+						'type' => 'title',
+						'desc' => __( 'Fraud detection methods used to validate referrals', 'referral-system-for-woocommerce' ),
+						'id'   => 'trswc_opt_fraud_detection_methods',
+					),
+					array(
+						'type' => 'sectionend',
+						'id'   => 'trswc_opt_fraud_detection_methods'
+					),
+
 					// Authenticity
 					array(
 						'name' => __( 'Authenticity', 'referral-system-for-woocommerce' ),
 						'type' => 'title',
-						'desc' => sprintf(__( 'Options regarding <a href="%s">Referral Authenticity</a>, including fraud detection methods', 'referral-system-for-woocommerce' ),$this->get_authenticity_admin_url()),
+						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Authenticity</a> suggested by fraud detection methods.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
 						'id'   => 'trswc_opt_authenticity',
 					),
 					array(
 						'type'    => 'select',
-						'id'      => 'trswc_opt_authenticity_reliable',
+						'id'      => 'trswc_opt_auto_auth_reliable',
 						'name'    => __( 'Apparently Reliable', 'referral-system-for-woocommerce' ),
 						'desc'    => __( "When a referral doesn't match none of the fraud detection methods", 'referral-system-for-woocommerce' ),
 						'options' => $this->get_authenticity_terms(),
 						'class'   => 'wc-enhanced-select',
-						'default' => array('apparently-reliable'),
-					),
-					apply_filters('trswc_admin_authenticity_term_options',array()),
-					array(
-						'type'    => 'multiselect',
-						'id'      => 'trswc_opt_referral_blocking',
-						'name'    => __( 'Referral Blocking', 'referral-system-for-woocommerce' ),
-						'desc'    => __( 'Prevents referrals from being created in case it matches a fraud detection method', 'referral-system-for-woocommerce' ),
-						'desc_tip'=> __( 'Leave it empty if you do not want to block referrals', 'referral-system-for-woocommerce' ),
-						'options' => array( 'same_email' => __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' ) ),
-						'class'   => 'wc-enhanced-select',
-						'default' => array('same_email'),
+						'default' => array( 'apparently-reliable' ),
 					),
 					array(
 						'type' => 'sectionend',

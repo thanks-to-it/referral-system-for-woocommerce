@@ -42,20 +42,25 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 			return $terms;
 		}
 
-		public function get_fraud_data_label( $fraud_data_id ) {
-			switch ( $fraud_data_id ) {
-				case 'same_email':
-					return __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' );
-				break;
-				case 'same_ip':
-					return __( 'Referral and Customer have the same IP', 'referral-system-for-woocommerce' );
-				break;
-				case 'found_cookie':
-					return __( 'Found a Referrer Cookie', 'referral-system-for-woocommerce' );
-				break;
-				case 'cookie_match_referrer':
-					return __( 'Cookie match Referrer ID', 'referral-system-for-woocommerce' );
-				break;
+		public function get_fraud_detection_methods() {
+			return apply_filters( 'trswc_fraud_detection_methods', array(
+				array( 'id' => 'same_email', 'friendly_id' => __( 'Email matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When Referrer and Customer have the same email', 'referral-system-for-woocommerce' ), 'detected' => __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'same_ip', 'friendly_id' => __( 'IP matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When Referrer and Customer have the same IP', 'referral-system-for-woocommerce' ), 'detected' => __( 'Referrer and Customer have the same IP', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'found_cookie', 'friendly_id' => __( 'Cookie finding', 'referral-system-for-woocommerce' ), 'description' => __( 'When finding a Referrer Cookie on Customer side', 'referral-system-for-woocommerce' ), 'detected' => __( 'Found Referrer Cookie on customer side', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'cookie_match_referrer', 'friendly_id' => __( 'Cookie matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When besides finding a Cookie on Customer side, it matches the Referrer', 'referral-system-for-woocommerce' ), 'detected' => __( 'Found Cookie and it matches the Referrer', 'referral-system-for-woocommerce' ) ),
+			) );
+		}
+
+		public function get_fraud_detection_method( $fraud_data_id ) {
+			$methods = $this->get_fraud_detection_methods();
+
+			$detection_index = wp_list_filter( $methods, array( 'id' => $fraud_data_id ) );
+			if ( is_array( $detection_index ) && count( $detection_index ) > 0 ) {
+				reset( $detection_index );
+				$first_key = key( $detection_index );
+				return $methods[ $first_key ];
+			} else {
+				return false;
 			}
 		}
 
@@ -78,7 +83,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 				<?php endif; ?>
                 <ul>
 					<?php foreach ( $authenticity_data as $data ): ?>
-                        <li><?php echo $authenticity->get_fraud_data_label( $data ) ?></li>
+                        <li><?php echo $authenticity->get_fraud_detection_method( $data )['detected'] ?></li>
 					<?php endforeach; ?>
                 </ul>
             </div>
@@ -109,21 +114,22 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 			$customer_email = $order->get_billing_email();
 			$customer_ip    = $order->get_customer_ip_address();
 
+			$methods = $this->get_fraud_detection_methods();
 			$fraud_info = array();
 
 			if ( $customer_email == $referrer_email ) {
-				$fraud_info['same_email'] = $this->get_fraud_data_label( 'same_email' );
+				$fraud_info['same_email'] = $this->get_fraud_detection_method('same_email');
 			}
 
 			if ( $customer_ip == $referrer_ip ) {
-				$fraud_info['same_ip'] = __( 'Referral and Customer have the same IP', 'referral-system-for-woocommerce' );
+				$fraud_info['same_ip'] = $this->get_fraud_detection_method('same_ip');
 			}
 
 			if ( ! empty( $referrer_cookie ) ) {
-				$fraud_info['found_cookie'] = __( 'Found a Referrer Cookie', 'referral-system-for-woocommerce' );
+				$fraud_info['found_cookie'] = $this->get_fraud_detection_method('found_cookie');
 
 				if ( $referrer->get_referrer_id_from_cookie( $referrer_cookie ) == $referrer_id ) {
-					$fraud_info['cookie_match_referrer'] = __( 'Cookie match Referrer ID', 'referral-system-for-woocommerce' );
+					$fraud_info['cookie_match_referrer'] = $this->get_fraud_detection_method('cookie_match_referrer');
 				}
 			}
 
@@ -131,8 +137,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 		}
 
 		public function get_reliable_term() {
-			$term_opt      = get_option( 'trswc_opt_authenticity_reliable', array( 'apparently-reliable' ) );
-			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			$term_opt = get_option( 'trswc_opt_auto_auth_reliable', array( 'apparently-reliable' ) );
+			$term     = get_term_by( 'slug', $term_opt[0], $this->tax_id );
 			return $term;
 		}
 

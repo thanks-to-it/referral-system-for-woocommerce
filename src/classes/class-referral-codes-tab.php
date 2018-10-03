@@ -62,9 +62,16 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 			if ( $the_query->have_posts() ) {
 				while ( $the_query->have_posts() ) {
 					$the_query->the_post();
-					$coupon                       = new \WC_Coupon( get_the_title() );
+					global $post;
+
+					$coupon                       = new \WC_Coupon( get_the_ID() );
+
 					$referral_coupon_code         = new Referral_Coupon();
 					$referral_coupon_code_encoded = $referral_coupon_code->encode( $coupon->get_id(), get_current_user_id() );
+
+					/*Template::get_template( 'referral-code-box.php', array(
+						'referral_coupon_code_encoded' => $referral_coupon_code_encoded
+					) );*/
 					echo "
 					<dl class='trswc-dl'>
 						<dt>Code:</dt>

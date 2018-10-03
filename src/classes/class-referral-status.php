@@ -38,20 +38,20 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Status' ) ) {
 		}
 
 		public function get_paid_term() {
-			$term_opt      = get_option( 'trswc_opt_status_paid', array( 'paid' ) );
-			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			$term_opt = get_option( 'trswc_opt_status_paid', array( 'paid' ) );
+			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
 		}
 
 		public function get_unpaid_term() {
-			$term_opt      = get_option( 'trswc_opt_status_unpaid', array( 'unpaid' ) );
-			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			$term_opt = get_option( 'trswc_opt_status_unpaid', array( 'unpaid' ) );
+			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
 		}
 
 		public function get_rejected_term() {
-			$term_opt      = get_option( 'trswc_opt_status_rejected', array( 'rejected' ) );
-			$term               = get_term_by( 'slug', $term_opt[0], $this->tax_id );
+			$term_opt = get_option( 'trswc_opt_status_rejected', array( 'rejected' ) );
+			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
 		}
 
@@ -83,7 +83,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Status' ) ) {
 		public function add_term( $term_slug ) {
 			$terms = $this->get_default_terms();
 			$term  = wp_list_filter( $terms, array( 'slug' => $term_slug ) );
-			$pos = reset( $term );
+			$pos   = reset( $term );
 
 			return wp_insert_term(
 				$pos['label'],
