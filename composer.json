@@ -26,11 +26,12 @@
     "optimize-autoloader": true
   },
   "require": {
-    "php": ">=5.3.2",
+    "php": ">=5.4.0",
     "composer/installers": ">=v1.2.0",
     "thanks-to-it/wp-admin-notices": "dev-master",
     "hashids/hashids":"2.0.4",
-    "webdevstudios/taxonomy_single_term":"dev-master"
+    "webdevstudios/taxonomy_single_term":"dev-master",
+    "cmb2/cmb2": "dev-master"
   },
   "extra": {
     "installer-paths": {
@@ -50,7 +51,8 @@
       "/tests/"
     ],
     "files": [
-      "vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php"
+      "vendor/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php",
+      "vendor/cmb2/cmb2/init.php"
     ]
   }
 }

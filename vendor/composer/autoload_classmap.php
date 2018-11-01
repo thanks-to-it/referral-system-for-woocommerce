@@ -115,6 +115,7 @@ return array(
     'ThanksToIT\\RSWC\\Referrals_Tab' => $baseDir . '/src/classes/class-referrals-tab.php',
     'ThanksToIT\\RSWC\\Referrer' => $baseDir . '/src/classes/class-referrer.php',
     'ThanksToIT\\RSWC\\Template' => $baseDir . '/src/classes/class-template.php',
+    'ThanksToIT\\RSWC\\Test' => $baseDir . '/src/classes/class-test.php',
     'ThanksToIT\\WPAN\\Ajax' => $vendorDir . '/thanks-to-it/wp-admin-notices/src/classes/class-ajax.php',
     'ThanksToIT\\WPAN\\Display_Rules' => $vendorDir . '/thanks-to-it/wp-admin-notices/src/classes/class-display-rules.php',
     'ThanksToIT\\WPAN\\Javascript' => $vendorDir . '/thanks-to-it/wp-admin-notices/src/classes/class-javascript.php',

@@ -9,6 +9,9 @@
 
 namespace ThanksToIT\RSWC;
 
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -277,11 +280,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 				wp_set_object_terms( $referral_id, $term->slug, $authenticity->tax_id );
 			} else {
 				$authenticity = new Authenticity();
-				foreach ( $fraud_info as $fraud_id) {
+				foreach ( $fraud_info as $fraud_id ) {
 					$term_slug = get_option( 'trswc_opt_auto_auth_' . $fraud_id, 'possible-fraud' );
-					$term = get_term_by( 'slug', $term_slug, $authenticity->tax_id );
-					$terms = wp_get_post_terms( $referral_id, $authenticity->tax_id, array( 'fields' => 'ids' ) );
-					$terms[]=$term->term_id;
+					$term      = get_term_by( 'slug', $term_slug, $authenticity->tax_id );
+					$terms     = wp_get_post_terms( $referral_id, $authenticity->tax_id, array( 'fields' => 'ids' ) );
+					$terms[]   = $term->term_id;
 					wp_set_object_terms( $referral_id, $terms, $authenticity->tax_id );
 				}
 			}

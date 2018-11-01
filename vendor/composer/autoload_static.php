@@ -9,6 +9,7 @@ class ComposerStaticInit269a8e07cbf91ad9def87be5bbc1ba6f
     public static $files = array (
         '1609d6f3e293af2b810977796160a51d' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/functions/functions.php',
         '47fbe3864bfe5d2b8e4bf177f64d9580' => __DIR__ . '/..' . '/webdevstudios/taxonomy_single_term/class.taxonomy-single-term.php',
+        'a32262f8a8fb568afb9d39bc3f634bae' => __DIR__ . '/..' . '/cmb2/cmb2/init.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -143,6 +144,7 @@ class ComposerStaticInit269a8e07cbf91ad9def87be5bbc1ba6f
         'ThanksToIT\\RSWC\\Referrals_Tab' => __DIR__ . '/../..' . '/src/classes/class-referrals-tab.php',
         'ThanksToIT\\RSWC\\Referrer' => __DIR__ . '/../..' . '/src/classes/class-referrer.php',
         'ThanksToIT\\RSWC\\Template' => __DIR__ . '/../..' . '/src/classes/class-template.php',
+        'ThanksToIT\\RSWC\\Test' => __DIR__ . '/../..' . '/src/classes/class-test.php',
         'ThanksToIT\\WPAN\\Ajax' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-ajax.php',
         'ThanksToIT\\WPAN\\Display_Rules' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-display-rules.php',
         'ThanksToIT\\WPAN\\Javascript' => __DIR__ . '/..' . '/thanks-to-it/wp-admin-notices/src/classes/class-javascript.php',
