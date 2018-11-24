@@ -253,9 +253,19 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'name' => __( 'Status', 'referral-system-for-woocommerce' ),
 						'type' => 'title',
-						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>.', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ) . '<br />' . __( 'You are free to create as many Status you want, but at least 3 are required (paid,unpaid,rejected)', 'referral-system-for-woocommerce' ),
+						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>.', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ) . '<br />' . __( 'You are free to create as many Status you want, but at least 3 are necessary (paid, unpaid, rejected)', 'referral-system-for-woocommerce' ),
 						'id'   => 'trswc_opt_status',
 					),
+					array(
+						'type'    => 'select',
+						'id'      => 'trswc_opt_status_default',
+						'name'    => __( 'Default Commission Status', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Status after a commission is automatically created', 'referral-system-for-woocommerce' ),
+						'options' => $this->get_status_terms(),
+						'class'   => 'wc-enhanced-select',
+						'default' => array( 'unpaid' ),
+					),
+
 					array(
 						'type'    => 'select',
 						'id'      => 'trswc_opt_status_paid',

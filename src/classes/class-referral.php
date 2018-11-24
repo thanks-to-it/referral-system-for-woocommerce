@@ -92,13 +92,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 		}
 
 		public function manage_ui_columns_content( $column, $post_id ) {
-			//error_log($column);
 			$column_meta_value = get_post_meta( $post_id, $column, true );
 			switch ( $column ) {
 				case $this->postmeta['referrer_id'] :
-					$referrer_id = $column_meta_value;
-					$referrer    = get_user_by( 'id', $referrer_id );
-					echo '<a href="' . get_edit_user_link( $referrer_id ) . '">' . esc_html( $referrer->user_email ) . '</a>';
+					if ( ! empty( $column_meta_value ) ) {
+						$referrer_id = $column_meta_value;
+						$referrer    = get_user_by( 'id', $referrer_id );
+						echo '<a href="' . get_edit_user_link( $referrer_id ) . '">' . esc_html( $referrer->user_email ) . '</a>';
+					}
 				break;
 				case $this->postmeta['order_id'] :
 					$order_url = admin_url( "post.php?post={$column_meta_value}&action=edit" );
@@ -114,7 +115,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 					echo '<strong>' . $column_meta_value . '</strong>';
 				break;
 			}
-
 		}
 
 		public function calculate_total_reward_value( $referral_coupon_id, \WC_Order $order, $referrer_id ) {
@@ -225,6 +225,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			$coupon_code        = get_post_meta( $order_id, $referral_coupon->order_postmeta['coupon_code'], true );
 			$order              = get_post( $order_id );
 
+			// Prevents referral creation in case it's a default order
+			if (
+				empty( $referral_code ) ||
+				empty( $referrer_id )
+			) {
+				return;
+			}
+
 			// Block referral creation
 			$authenticity       = new Authenticity();
 			$fraud_info         = get_post_meta( $order_id, $authenticity->order_postmeta['fraud_data'], true );
@@ -264,9 +272,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 					'post_title' => __( 'Referral' ) . ' ' . $referral_id
 				) );
 
-				// Set as status unpaid
+				// Set as default status (probably unpaid)
 				$referral_status = new Referral_Status();
-				$term            = $referral_status->get_unpaid_term();
+				$term            = $referral_status->get_default_term();
 				wp_set_object_terms( $referral_id, $term->slug, $referral_status->tax_id );
 
 				$this->set_referral_authenticity( $fraud_info, $referral_id );

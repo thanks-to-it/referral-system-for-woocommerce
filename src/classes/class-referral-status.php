@@ -37,20 +37,26 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Status' ) ) {
 			);
 		}
 
+		public function get_default_term() {
+			$term_opt = get_option( 'trswc_opt_status_default', 'unpaid' );
+			$term = get_term_by( 'slug', $term_opt, $this->tax_id );
+			return $term;
+		}
+
 		public function get_paid_term() {
-			$term_opt = get_option( 'trswc_opt_status_paid', array( 'paid' ) );
+			$term_opt = get_option( 'trswc_opt_status_paid', 'paid' );
 			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
 		}
 
 		public function get_unpaid_term() {
-			$term_opt = get_option( 'trswc_opt_status_unpaid', array( 'unpaid' ) );
+			$term_opt = get_option( 'trswc_opt_status_unpaid', 'unpaid' );
 			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
 		}
 
 		public function get_rejected_term() {
-			$term_opt = get_option( 'trswc_opt_status_rejected', array( 'rejected' ) );
+			$term_opt = get_option( 'trswc_opt_status_rejected', 'rejected' );
 			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
 		}

@@ -25,15 +25,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			'ip' => '_trswc_ip',
 		);
 
-		public static function is_current_user_referrer() {
-			$current_user = wp_get_current_user();
-			if ( in_array( self::$role_referrer, $current_user->roles ) ) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 		public function get_cookie() {
 			$authenticity = new Authenticity();
 			if ( isset( $_COOKIE[ $authenticity->cookies['referrer_cookie'] ] ) ) {
@@ -81,7 +72,16 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			}
 		}
 
+		public static function is_current_user_referrer() {
+			$current_user = wp_get_current_user();
+			$user_id      = $current_user->ID;
+			return self::is_user_referrer( $user_id );
+		}
+
 		public static function is_user_referrer( $user_id ) {
+			if ( $user_id == 0 ) {
+				return false;
+			}
 			$current_user = get_user_by( 'ID', $user_id );
 			if ( in_array( self::$role_referrer, $current_user->roles ) ) {
 				return true;

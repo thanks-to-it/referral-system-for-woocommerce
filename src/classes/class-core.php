@@ -12,8 +12,6 @@ namespace ThanksToIT\RSWC;
 use ThanksToIT\RSWC\Admin\Admin_Settings;
 use ThanksToIT\RSWC\Admin\Referral_Coupon_Tab;
 use ThanksToIT\RSWC\Admin\Referral_Menu_Item;
-use \Carbon_Fields\Container;
-use \Carbon_Fields\Field;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -221,25 +219,26 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 		}
 
 		private function handle_referrer() {
-			$referrer = $this->referrer;
-
 			// Add Referrer roles on plugin activation
-			register_activation_hook( $this->plugin_info['path'], array( $referrer, 'add_roles' ) );
+			register_activation_hook( $this->plugin_info['path'], function () {
+				$this->referrer = new Referrer();
+				$this->referrer->add_roles();
+			} );
 
-			// Save referrer ip
-			add_action( 'wp_login', array( $referrer, 'save_ip' ), 10, 2 );
+			add_action( 'init', function () {
+				$this->referrer = new Referrer();
+				// Save referrer ip
+				add_action( 'wp_login', array( $this->referrer, 'save_ip' ), 10, 2 );
 
-			// Save referrer cookie
-			add_action( 'wp_login', array( $referrer, 'save_cookie' ), 10, 2 );
+				// Save referrer cookie
+				add_action( 'wp_login', array( $this->referrer, 'save_cookie' ), 10, 2 );
+			}, 10, 2 );
 		}
 
 		private function handle_referrals() {
 			add_action( 'init', function () {
 				$this->referral = new Referral();
-			} );
-
-			add_action( 'init', function () {
-				$referral = $this->referral;
+				$referral       = $this->referral;
 
 				// Add commission post type
 				$referral->register_post_type();
@@ -260,9 +259,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 			add_action( 'init', function () {
 				$this->referral_codes_tab = new Referral_Codes_Tab();
 				$this->referrals_tab      = new Referrals_Tab();
-			} );
 
-			add_action( 'init', function () {
 				// My Account > Referral Codes tab
 				$referral_codes_tab = $this->referral_codes_tab;
 				$referral_codes_tab->add_endpoint();
@@ -293,7 +290,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				// Add referral menu item
 				$referral_menu_item = new Referral_Menu_Item();
 				$referral_menu_item->add_referral_page();
-
 				$referral_coupon_tab = new Referral_Coupon_Tab();
 
 				// Referral tab on admin
