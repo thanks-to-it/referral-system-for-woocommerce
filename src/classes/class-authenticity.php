@@ -150,11 +150,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 				),
 				array(
 					'slug'  => 'possible-fraud',
-					'label' => __( 'Possible fraud', 'referral-system-for-woocommerce' ),
+					'label' => __( 'Possible Fraud', 'referral-system-for-woocommerce' ),
 				),
 				array(
 					'slug'  => 'fraud-alert',
-					'label' => __( 'Fraud alert', 'referral-system-for-woocommerce' ),
+					'label' => __( 'Fraud Alert', 'referral-system-for-woocommerce' ),
 				),
 			);
 		}

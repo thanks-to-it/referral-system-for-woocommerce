@@ -232,6 +232,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 
 				// Save referrer cookie
 				add_action( 'wp_login', array( $this->referrer, 'save_cookie' ), 10, 2 );
+
+				add_action( 'cmb2_admin_init', array( $this->referrer, 'add_custom_fields' ), 10, 2 );
 			}, 10, 2 );
 		}
 
@@ -250,6 +252,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				add_filter( "manage_{$referral->cpt_id}_posts_columns", array( $referral, 'manage_ui_columns' ) );
 				add_action( "manage_{$referral->cpt_id}_posts_custom_column", array( $referral, 'manage_ui_columns_content' ), 10, 2 );
 				add_action( "manage_{$referral->cpt_id}_posts_column", array( $referral, 'manage_ui_columns_content' ), 10, 2 );
+
+				// Add Custom Metabox
+				add_action( 'cmb2_admin_init', array( $referral, 'add_custom_metabox' ) );
 
 				//add_filter( 'post_row_actions', array( $referral, 'modify_list_row_actions' ), 10, 2 );
 			} );

@@ -22,7 +22,14 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 		public static $role_referrer_rejected = 'trswc_referrer_rejected';
 
 		public $usermeta = array(
-			'ip' => '_trswc_ip',
+			'ip'                  => '_trswc_ip',
+			'bank_account_name'   => '_trswc_bank_account_name',
+			'bank_name'           => '_trswc_bank_name',
+			'bank_address'        => '_trswc_bank_address',
+			'aba_routing_number'  => '_trswc_aba_routing_number',
+			'iban'                => '_trswc_iban',
+			'account_holder_name' => '_trswc_account_holder_name',
+			'paypal_email'        => '_trswc_paypal_email',
 		);
 
 		public function get_cookie() {
@@ -60,6 +67,84 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			update_user_meta( $user->ID, $this->usermeta['ip'], $this->get_ip() );
 		}
 
+		function show_meta_to_chosen_roles( $cmb ) {
+			$roles = $cmb->prop( 'show_on_roles', array() );
+			if ( empty( $roles ) ) {
+				return false;
+			}
+			global $user_id;
+			if ( ! $user_id || empty( $user_id ) ) {
+				return false;
+			}
+			$edited_user = new \WP_User( $user_id );
+			$has_role    = array_intersect( (array) $roles, $edited_user->roles );
+			return ! empty( $has_role );
+		}
+
+		function add_custom_fields() {
+			/**
+			 * Metabox for the user profile screen
+			 */
+			$cmb_user = new_cmb2_box( array(
+				'id'               => '_trswc_referrer_fields',
+				'title'            => esc_html__( 'User Profile Metabox', 'referral-system-for-woocommerce' ), // Doesn't output for user boxes
+				'object_types'     => array( 'user' ), // Tells CMB2 to use user_meta vs post_meta
+				'show_names'       => true,
+				'show_on_roles'    => array( self::$role_referrer_pending, self::$role_referrer ),
+				'new_user_section' => 'add-new-user', // where form will show on new user page. 'add-existing-user' is only other valid option.
+				'show_on_cb'       => array( $this, 'show_meta_to_chosen_roles' ),
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'Payment Details', 'referral-system-for-woocommerce' ),
+				//'desc'     => esc_html__( 'field description (optional)', 'referral-system-for-woocommerce' ),
+				'id'       => '_trswc_title_1',
+				'type'     => 'title',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'Bank Account Name', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['bank_account_name'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'Bank Name', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['bank_name'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'Bank Address', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['bank_address'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'ABA Routing Number', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['aba_routing_number'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'IBAN', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['iban'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'Account Holder Name', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['account_holder_name'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+			$cmb_user->add_field( array(
+				'name'     => esc_html__( 'Paypal Email', 'referral-system-for-woocommerce' ),
+				'id'       => $this->usermeta['paypal_email'],
+				'type'     => 'text',
+				'on_front' => false,
+			) );
+		}
+
 		function get_ip() {
 			foreach ( array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' ) as $key ) {
 				if ( array_key_exists( $key, $_SERVER ) === true ) {
@@ -91,8 +176,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 		}
 
 		public $user_caps = array(
-			"read"                      => true,
-			'level_0'                   => true,
+			"read"    => true,
+			'level_0' => true,
 			//'edit_alg_mpwc_commissions' => true,
 		);
 

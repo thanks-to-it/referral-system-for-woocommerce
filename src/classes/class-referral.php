@@ -30,6 +30,80 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			'coupon_code'        => '_trswc_coupon_code',
 		);
 
+		private function get_referral_currency( $referral_id = null ) {
+			$referral_id = $referral_id ? $referral_id : ( isset( $_REQUEST['post_ID'] ) ? $_REQUEST['post_ID'] : ( isset( $_REQUEST['post'] ) ? $_REQUEST['post'] : null ) );
+			if ( $referral_id ) {
+				if ( $this->cpt_id !== get_post_type( $referral_id ) ) {
+					return false;
+				}
+			}
+			return get_post_meta( $referral_id, $this->postmeta['currency'], true );
+		}
+
+		public function add_custom_metabox() {
+			$cmb_demo = new_cmb2_box( array(
+				'id'           => '_trswc_referral_cmb',
+				'cmb_styles'   => false, // false to disable the CMB stylesheet
+				'title'        => esc_html__( 'Info', 'referral-system-for-woocommerce' ),
+				'object_types' => array( $this->cpt_id ), // Post type
+			) );
+			$cmb_demo->add_field( array(
+				'name'       => esc_html__( 'Referrer', 'referral-system-for-woocommerce' ),
+				'id'         => $this->postmeta['referrer_id'],
+				'type'       => 'text',
+				'attributes' => array(
+					'type'  => 'number',
+					'style' => 'width:98%'
+				)
+			) );
+			$cmb_demo->add_field( array(
+				'name'       => esc_html__( 'Order', 'referral-system-for-woocommerce' ),
+				'id'         => $this->postmeta['order_id'],
+				'type'       => 'text',
+				'attributes' => array(
+					'type'  => 'number',
+					'style' => 'width:98%'
+				)
+			) );
+			$cmb_demo->add_field( array(
+				'name'       => __( 'Reward Value', 'marketplace-for-woocommerce' ) . ' (' . $this->get_referral_currency() . ')',
+				'id'         => $this->postmeta['total_reward_value'],
+				'type'       => 'text',
+				'attributes' => array(
+					'step'  => '0.001',
+					'type'  => 'number',
+					'style' => 'width:98%'
+				),
+			) );
+			$cmb_demo->add_field( array(
+				'name'       => esc_html__( 'Currency', 'referral-system-for-woocommerce' ),
+				'id'         => $this->postmeta['currency'],
+				'type'       => 'select',
+				'options'    => get_woocommerce_currencies(),
+				'default'    => get_woocommerce_currency(),
+				'attributes' => array(
+					'style' => 'width:98%'
+				)
+			) );
+			$cmb_demo->add_field( array(
+				'name'       => esc_html__( 'Referral Code', 'referral-system-for-woocommerce' ),
+				'id'         => $this->postmeta['referral_code'],
+				'type'       => 'text',
+				'attributes' => array(
+					'style' => 'width:98%'
+				)
+
+			) );
+			$cmb_demo->add_field( array(
+				'name'       => esc_html__( 'Coupon Code', 'referral-system-for-woocommerce' ),
+				'id'         => $this->postmeta['coupon_code'],
+				'type'       => 'text',
+				'attributes' => array(
+					'style' => 'width:98%'
+				)
+			) );
+		}
+
 		public function manage_ui_columns( $columns ) {
 			$new_columns = array(
 				$this->postmeta['referrer_id']        => __( 'Referrer', 'referral-system-for-woocommerce' ),
