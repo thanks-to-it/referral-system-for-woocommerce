@@ -249,6 +249,57 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 						'id'   => 'trswc_opt_general'
 					),
 
+					// Referrer
+					array(
+						'name' => __( 'Referrer', 'referral-system-for-woocommerce' ),
+						'type' => 'title',
+						'desc' => __( 'A person who refers other users', 'referral-system-for-woocommerce' ),
+						'id'   => 'trswc_opt_referrer',
+					),
+					array(
+						'type'    => 'checkbox',
+						'id'      => 'trswc_opt_referrer_payment_fields_enable',
+						'name'    => __( 'Profile Payment Fields', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Display payment fields on profile page for referrer users', 'referral-system-for-woocommerce' ),
+						'desc_tip'=> __( 'These fields are optional but will help you to know how to pay referrers individually. Some fields would be bank account, paypal info and so on', 'referral-system-for-woocommerce' ),
+						//'class'    => 'wc-enhanced-select',
+						'default' => 'yes',
+					),
+					array(
+						'type'    => 'text',
+						'id'      => 'trswc_opt_referrer_register_text',
+						'name'    => __( 'Registration Checkbox Text', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Checkbox Text displayed on <strong>My Account > Account Details</strong> page to users who want to become referrers', 'referral-system-for-woocommerce' ),
+						'desc_tip'=> __( 'Leaving it empty will remove it from being displayed', 'referral-system-for-woocommerce' ),
+						//'class'    => 'wc-enhanced-select',
+						'default' => __( 'Become a Referrer', 'referral-system-for-woocommerce' ),
+					),
+					array(
+						'type'    => 'checkbox',
+						'id'      => 'trswc_opt_referrer_register_auto_approval',
+						'name'    => __( 'Automatic Approval', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'After users confirm they want to become referrers, they will be automatically accepted as such, bypassing the pending status', 'referral-system-for-woocommerce' ),
+						//'class'    => 'wc-enhanced-select',
+						'default' => 'no',
+					),
+					array(
+						'type'     => 'select',
+						'id'       => 'trswc_opt_referrer_role_method',
+						'name'     => __( 'Role Setting Method', 'referral-system-for-woocommerce' ),
+						'desc'     => __( 'How the Referrer role will be set to users, replacing their old role or simply adding it', 'referral-system-for-woocommerce' ),
+						'desc_tip' => __( 'You should set to "Add" if you want to preserve their old role', 'referral-system-for-woocommerce' ),
+						'options'  => array(
+							'add'     => __( 'Add', 'referral-system-for-woocommerce' ),
+							'replace' => __( 'Replace', 'referral-system-for-woocommerce' ),
+						),
+						'class'    => 'wc-enhanced-select',
+						'default'  => 'replace',
+					),
+					array(
+						'type' => 'sectionend',
+						'id'   => 'trswc_opt_referrer'
+					),
+
 					// Status
 					array(
 						'name' => __( 'Status', 'referral-system-for-woocommerce' ),

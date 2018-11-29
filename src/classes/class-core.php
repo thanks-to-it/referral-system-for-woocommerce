@@ -129,6 +129,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				$this->handle_referral_status();
 				$this->handle_authenticity();
 				register_activation_hook( $this->plugin_info['path'], array( $this, 'update_rewrite_rules' ) );
+
+				// Email
+				add_filter( 'woocommerce_email_footer_text', function ( $string ) {
+					return str_replace( '{site_title}', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $string );
+				} );
 			}
 		}
 
@@ -233,7 +238,15 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Core' ) ) {
 				// Save referrer cookie
 				add_action( 'wp_login', array( $this->referrer, 'save_cookie' ), 10, 2 );
 
-				add_action( 'cmb2_admin_init', array( $this->referrer, 'add_custom_fields' ), 10, 2 );
+				// Add payment fields on profile page
+				add_action( 'cmb2_admin_init', array( $this->referrer, 'add_payment_fields' ), 10, 2 );
+
+				// Add registration checkbox
+				add_action( 'woocommerce_register_form', array( $this->referrer->registry, 'add_registration_checkbox' ), 10 );
+				add_action( 'woocommerce_edit_account_form', array( $this->referrer->registry, 'add_registration_checkbox' ), 10 );
+				add_action( 'woocommerce_created_customer', array( $this->referrer->registry, 'change_user_role_to_referrer' ), 10 );
+				add_action( 'woocommerce_save_account_details', array( $this->referrer->registry, 'change_user_role_to_referrer' ), 10 );
+				add_action( 'trswc_change_user_role_to_referrer', array( $this->referrer->registry, 'send_email_to_admin_regarding_new_referrers' ), 10, 2 );
 			}, 10, 2 );
 		}
 

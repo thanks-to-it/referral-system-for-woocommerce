@@ -23,7 +23,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 		}
 
 		function add_query_vars( $vars ) {
-			if ( ! Referrer::is_current_user_referrer() ) {
+			$referrer = new Referrer();
+			if ( ! $referrer->is_current_user_referrer() ) {
 				return $vars;
 			}
 
@@ -41,7 +42,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 		}
 
 		function add_menu_item( $items ) {
-			if ( ! Referrer::is_current_user_referrer() ) {
+			$referrer = new Referrer();
+			if ( ! $referrer->is_current_user_referrer() ) {
 				return $items;
 			}
 
@@ -50,7 +52,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Codes_Tab' ) ) {
 		}
 
 		function add_content() {
-			if ( ! Referrer::is_current_user_referrer() ) {
+			$referrer = new Referrer();
+			if ( ! $referrer->is_current_user_referrer() ) {
 				return;
 			}
 

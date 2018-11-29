@@ -9,6 +9,8 @@
 
 namespace ThanksToIT\RSWC;
 
+use ThanksToIT\RSWC\Referrer\Registry;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 } // Exit if accessed directly
@@ -17,9 +19,18 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 
 	class Referrer {
 
-		public static $role_referrer = 'trswc_referrer';
-		public static $role_referrer_pending = 'trswc_referrer_pending';
-		public static $role_referrer_rejected = 'trswc_referrer_rejected';
+		public $role_referrer = 'trswc_referrer';
+		public $role_referrer_pending = 'trswc_referrer_pending';
+		public $role_referrer_rejected = 'trswc_referrer_rejected';
+
+		/**
+		 * @var Registry
+		 */
+		public $registry;
+
+		public function __construct() {
+			$this->registry = new Registry($this);
+		}
 
 		public $usermeta = array(
 			'ip'                  => '_trswc_ip',
@@ -52,7 +63,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 		}
 
 		public function save_cookie( $user_login, \WP_User $user ) {
-			if ( ! self::is_user_referrer( $user->ID ) ) {
+			if ( ! $this->is_user_referrer( $user->ID ) ) {
 				return;
 			}
 			$authenticity = new Authenticity();
@@ -61,7 +72,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 		}
 
 		function save_ip( $user_login, $user ) {
-			if ( ! self::is_user_referrer( $user->ID ) ) {
+			if ( ! $this->is_user_referrer( $user->ID ) ) {
 				return;
 			}
 			update_user_meta( $user->ID, $this->usermeta['ip'], $this->get_ip() );
@@ -81,7 +92,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			return ! empty( $has_role );
 		}
 
-		function add_custom_fields() {
+		function add_payment_fields() {
+			if ( 'yes' !== get_option( 'trswc_opt_referrer_payment_fields_enable', 'yes' ) ) {
+				return;
+			}
+
 			/**
 			 * Metabox for the user profile screen
 			 */
@@ -90,7 +105,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 				'title'            => esc_html__( 'User Profile Metabox', 'referral-system-for-woocommerce' ), // Doesn't output for user boxes
 				'object_types'     => array( 'user' ), // Tells CMB2 to use user_meta vs post_meta
 				'show_names'       => true,
-				'show_on_roles'    => array( self::$role_referrer_pending, self::$role_referrer ),
+				'show_on_roles'    => array( $this->role_referrer_pending, $this->role_referrer ),
 				'new_user_section' => 'add-new-user', // where form will show on new user page. 'add-existing-user' is only other valid option.
 				'show_on_cb'       => array( $this, 'show_meta_to_chosen_roles' ),
 			) );
@@ -157,18 +172,18 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 			}
 		}
 
-		public static function is_current_user_referrer() {
+		public function is_current_user_referrer() {
 			$current_user = wp_get_current_user();
 			$user_id      = $current_user->ID;
-			return self::is_user_referrer( $user_id );
+			return $this->is_user_referrer( $user_id );
 		}
 
-		public static function is_user_referrer( $user_id ) {
+		public function is_user_referrer( $user_id ) {
 			if ( $user_id == 0 ) {
 				return false;
 			}
 			$current_user = get_user_by( 'ID', $user_id );
-			if ( in_array( self::$role_referrer, $current_user->roles ) ) {
+			if ( in_array( $this->role_referrer, $current_user->roles ) ) {
 				return true;
 			} else {
 				return false;
@@ -189,9 +204,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrer' ) ) {
 		}
 
 		public function add_roles() {
-			$this->add_role( self::$role_referrer, sanitize_text_field( __( 'Referrer', 'referral-system-for-woocommerce' ) ) );
-			$this->add_role( self::$role_referrer_pending, sanitize_text_field( __( 'Referrer - Pending', 'referral-system-for-woocommerce' ) ) );
-			$this->add_role( self::$role_referrer_rejected, sanitize_text_field( __( 'Referrer - Rejected', 'referral-system-for-woocommerce' ) ) );
+			$this->add_role( $this->role_referrer, sanitize_text_field( __( 'Referrer', 'referral-system-for-woocommerce' ) ) );
+			$this->add_role( $this->role_referrer_pending, sanitize_text_field( __( 'Referrer - Pending', 'referral-system-for-woocommerce' ) ) );
+			$this->add_role( $this->role_referrer_rejected, sanitize_text_field( __( 'Referrer - Rejected', 'referral-system-for-woocommerce' ) ) );
 		}
 	}
 }
