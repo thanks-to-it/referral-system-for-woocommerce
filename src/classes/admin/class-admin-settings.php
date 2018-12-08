@@ -266,15 +266,6 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 						'default' => 'yes',
 					),
 					array(
-						'type'    => 'text',
-						'id'      => 'trswc_opt_referrer_register_text',
-						'name'    => __( 'Registration Checkbox Text', 'referral-system-for-woocommerce' ),
-						'desc'    => __( 'Checkbox Text displayed on <strong>My Account > Account Details</strong> page to users who want to become referrers', 'referral-system-for-woocommerce' ),
-						'desc_tip'=> __( 'Leaving it empty will remove it from being displayed', 'referral-system-for-woocommerce' ),
-						//'class'    => 'wc-enhanced-select',
-						'default' => __( 'Become a Referrer', 'referral-system-for-woocommerce' ),
-					),
-					array(
 						'type'    => 'checkbox',
 						'id'      => 'trswc_opt_referrer_register_auto_approval',
 						'name'    => __( 'Automatic Approval', 'referral-system-for-woocommerce' ),
@@ -285,15 +276,24 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'type'     => 'select',
 						'id'       => 'trswc_opt_referrer_role_method',
-						'name'     => __( 'Role Setting Method', 'referral-system-for-woocommerce' ),
-						'desc'     => __( 'How the Referrer role will be set to users, replacing their old role or simply adding it', 'referral-system-for-woocommerce' ),
-						'desc_tip' => __( 'You should set to "Add" if you want to preserve their old role', 'referral-system-for-woocommerce' ),
+						'name'     => __( 'Automatic Approval Method', 'referral-system-for-woocommerce' ),
+						'desc'     => __( 'How the Referrer role will be automatically set to users, replacing their old role or adding it', 'referral-system-for-woocommerce' ),
+						'desc_tip' => __( 'You should set to "Add" if you want to preserve their old role.', 'referral-system-for-woocommerce' ),
 						'options'  => array(
 							'add'     => __( 'Add', 'referral-system-for-woocommerce' ),
 							'replace' => __( 'Replace', 'referral-system-for-woocommerce' ),
 						),
 						'class'    => 'wc-enhanced-select',
 						'default'  => 'replace',
+					),
+					array(
+						'type'    => 'text',
+						'id'      => 'trswc_opt_referrer_register_text',
+						'name'    => __( 'Registration Checkbox Text', 'referral-system-for-woocommerce' ),
+						'desc'    => __( 'Checkbox Text displayed on <strong>My Account > Account Details</strong> page to users who want to become referrers', 'referral-system-for-woocommerce' ),
+						'desc_tip'=> __( 'Leaving it empty will remove it from being displayed', 'referral-system-for-woocommerce' ),
+						//'class'    => 'wc-enhanced-select',
+						'default' => __( 'Become a Referrer', 'referral-system-for-woocommerce' ),
 					),
 					array(
 						'type' => 'sectionend',
@@ -304,7 +304,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'name' => __( 'Status', 'referral-system-for-woocommerce' ),
 						'type' => 'title',
-						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>.', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ) . '<br />' . __( 'You are free to create as many Status you want, but at least 3 are necessary (paid, unpaid, rejected)', 'referral-system-for-woocommerce' ),
+						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Status</a>.', 'referral-system-for-woocommerce' ), $this->get_status_admin_url() ) . '<br />' . __( 'You are free to create as many Status you want, but at least 3 are recommended (paid, unpaid, rejected)', 'referral-system-for-woocommerce' ),
 						'id'   => 'trswc_opt_status',
 					),
 					array(
@@ -317,7 +317,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 						'default' => array( 'unpaid' ),
 					),
 
-					array(
+					/*array(
 						'type'    => 'select',
 						'id'      => 'trswc_opt_status_paid',
 						'name'    => __( 'Paid', 'referral-system-for-woocommerce' ),
@@ -343,7 +343,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 						'options' => $this->get_status_terms(),
 						'class'   => 'wc-enhanced-select',
 						'default' => array( 'rejected' ),
-					),
+					),*/
 					array(
 						'type' => 'sectionend',
 						'id'   => 'trswc_opt_status'
@@ -365,7 +365,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'name' => __( 'Authenticity', 'referral-system-for-woocommerce' ),
 						'type' => 'title',
-						'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Authenticity</a> suggested by fraud detection methods.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
+						'desc' => sprintf( __( '<a href="%s">Referral Authenticity</a> can suggest if a Referral can be considered trustworthy and it is automatically set from fraud detection methods when a new Referral is created.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
+						//'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Authenticity</a> suggested by fraud detection methods.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
 						'id'   => 'trswc_opt_authenticity',
 					),
 					array(

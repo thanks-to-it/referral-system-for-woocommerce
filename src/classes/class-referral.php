@@ -117,7 +117,45 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			return $columns;
 		}
 
-		public function get_unpaid_commission_from_user_id( $user_id, $args = null ) {
+		public function get_total_sum_by_referral_status_term( \WP_Term $term, $args = array() ) {
+			$args         = wp_parse_args( $args, array(
+				'user_id'      => null,
+				'format_price' => false
+			) );
+			$format_price = $args['format_price'];
+
+			$referral_status = new Referral_Status();
+
+			$user_id = $args['user_id'];
+			if ( ! $user_id ) {
+				$user_id = get_current_user_id();
+			}
+
+			$unpaid_query = $this->get_commissions_query_from_user_id( $user_id, array(
+				'tax_query' => array(
+					'fields' => 'ids',
+					array(
+						'taxonomy' => $referral_status->tax_id,
+						'field'    => 'slug',
+						'terms'    => $term->slug,
+					),
+				),
+			) );
+
+			$total = 0;
+			foreach ( $unpaid_query->posts as $referral_id ) {
+				$referral_value = get_post_meta( $referral_id, $this->postmeta['total_reward_value'], true );
+				$total          += $referral_value;
+			}
+			if ( $format_price ) {
+				return wc_price( $total );
+			} else {
+				return $total;
+			}
+
+		}
+
+		/*public function get_unpaid_commission_from_user_id( $user_id, $args = null ) {
 			$status        = new Referral_Status();
 			$unpaid_status = $status->get_unpaid_term();
 			$args          = wp_parse_args( $args, array(
@@ -132,9 +170,9 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 			) );
 			$unpaid_query  = $this->get_commissions_query_from_user_id( get_current_user_id(), $args );
 			return $unpaid_query;
-		}
+		}*/
 
-		public function get_unpaid_commissions_total_from_user_id( $user_id, $args = null ) {
+		/*public function get_unpaid_commissions_total_from_user_id( $user_id, $args = null ) {
 			$referral     = new Referral();
 			$unpaid_query = $this->get_unpaid_commission_from_user_id( $user_id, $args );
 			$total_unpaid = 0;
@@ -143,7 +181,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral' ) ) {
 				$total_unpaid   += $referral_value;
 			}
 			return $total_unpaid;
-		}
+		}*/
 
 		public function get_commissions_query_from_user_id( $user_id, $args = null ) {
 			$args      = wp_parse_args( $args, array(

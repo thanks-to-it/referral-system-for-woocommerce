@@ -43,7 +43,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Status' ) ) {
 			return $term;
 		}
 
-		public function get_paid_term() {
+		/*public function get_paid_term() {
 			$term_opt = get_option( 'trswc_opt_status_paid', 'paid' );
 			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
@@ -59,9 +59,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Status' ) ) {
 			$term_opt = get_option( 'trswc_opt_status_rejected', 'rejected' );
 			$term     = get_term_by( 'slug', $term_opt, $this->tax_id );
 			return $term;
-		}
+		}*/
 
-		public function get_terms( $args ) {
+
+
+		public function get_terms( $args=array() ) {
 			$args  = wp_parse_args( $args, array(
 				'taxonomy'   => $this->tax_id,
 				'hide_empty' => false,

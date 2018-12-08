@@ -44,10 +44,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 
 		public function get_fraud_detection_methods() {
 			return apply_filters( 'trswc_fraud_detection_methods', array(
-				array( 'id' => 'same_email', 'friendly_id' => __( 'Email matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When Referrer and Customer have the same email', 'referral-system-for-woocommerce' ), 'detected' => __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' ) ),
-				array( 'id' => 'same_ip', 'friendly_id' => __( 'IP matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When Referrer and Customer have the same IP', 'referral-system-for-woocommerce' ), 'detected' => __( 'Referrer and Customer have the same IP', 'referral-system-for-woocommerce' ) ),
-				array( 'id' => 'found_cookie', 'friendly_id' => __( 'Cookie finding', 'referral-system-for-woocommerce' ), 'description' => __( 'When finding a Referrer Cookie on Customer side', 'referral-system-for-woocommerce' ), 'detected' => __( 'Found Referrer Cookie on customer side', 'referral-system-for-woocommerce' ) ),
-				array( 'id' => 'cookie_match_referrer', 'friendly_id' => __( 'Cookie matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When besides finding a Cookie on Customer side, it matches the Referrer', 'referral-system-for-woocommerce' ), 'detected' => __( 'Found Cookie and it matches the Referrer', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'same_email', 'friendly_id' => __( 'Email Matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When Referrer and Customer have the same email', 'referral-system-for-woocommerce' ), 'detected' => __( 'Referrer and Customer have the same email', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'same_ip', 'friendly_id' => __( 'IP Matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When Referrer and Customer have the same IP', 'referral-system-for-woocommerce' ), 'detected' => __( 'Referrer and Customer have the same IP', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'found_cookie', 'friendly_id' => __( 'Cookie Finding', 'referral-system-for-woocommerce' ), 'description' => __( 'When finding a Referrer Cookie on Customer side', 'referral-system-for-woocommerce' ), 'detected' => __( 'Found Referrer Cookie on customer side', 'referral-system-for-woocommerce' ) ),
+				array( 'id' => 'cookie_match_referrer', 'friendly_id' => __( 'Cookie Matching', 'referral-system-for-woocommerce' ), 'description' => __( 'When besides finding a Cookie on Customer side, it matches the Referrer', 'referral-system-for-woocommerce' ), 'detected' => __( 'Found Cookie and it matches the Referrer', 'referral-system-for-woocommerce' ) ),
 			) );
 		}
 

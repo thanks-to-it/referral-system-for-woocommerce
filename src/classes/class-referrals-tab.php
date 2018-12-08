@@ -59,11 +59,10 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
 
 			$referral        = new Referral();
 			$the_query       = $referral->get_commissions_query_from_user_id( get_current_user_id() );
-			$total_unpaid    = $referral->get_unpaid_commissions_total_from_user_id( get_current_user_id() );
+			//$total_unpaid    = $referral->get_unpaid_commissions_total_from_user_id( get_current_user_id() );
 			$referral_status = new Referral_Status();
 			$authenticity    = new Authenticity();
 			?>
-            <h3>Report</h3>
             <table class="my_account_orders">
                 <tr>
                     <thead>
@@ -72,10 +71,17 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
                     </thead>
                 </tr>
                 <tbody>
+                <?php foreach ($referral_status->get_terms() as $status_term) :?>
                 <tr>
-                    <td>Unpaid</td>
-                    <td><?php echo wc_price($total_unpaid); ?></td>
+                    <td><?php echo $status_term->name;?></td>
+                    <td>
+	                    <?php echo $referral->get_total_sum_by_referral_status_term( $status_term, array(
+		                    'user_id'      => get_current_user_id(),
+		                    'format_price' => true
+	                    ) ); ?>
+                    </td>
                 </tr>
+                <?php endforeach; ?>
                 </tbody>
             </table>
 
