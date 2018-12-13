@@ -196,6 +196,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referral_Coupon' ) ) {
 			if ( empty( $referral_code ) ) {
 				return;
 			}
+			$referrer = new Referrer();
 			$referral_code  = WC()->session->get( $this->wc_session_variables['referral_code'] );
 			$wc_coupon_code = WC()->session->get( $this->wc_session_variables['coupon_code'] );
 			$wc_coupon_id   = WC()->session->get( $this->wc_session_variables['coupon_id'] );
