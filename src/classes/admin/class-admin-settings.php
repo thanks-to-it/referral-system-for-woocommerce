@@ -365,7 +365,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Admin\Admin_Settings' ) ) {
 					array(
 						'name' => __( 'Authenticity', 'referral-system-for-woocommerce' ),
 						'type' => 'title',
-						'desc' => sprintf( __( '<a href="%s">Referral Authenticity</a> can suggest if a Referral can be considered trustworthy and it is automatically set from fraud detection methods when a new Referral is created.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
+						'desc' => sprintf( __( '<a href="%s">Referral Authenticity</a> will suggest if a Referral can be considered trustworthy. It is automatically set from fraud detection methods when a new Referral is created.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
 						//'desc' => sprintf( __( 'Options regarding <a href="%s">Referral Authenticity</a> suggested by fraud detection methods.', 'referral-system-for-woocommerce' ), $this->get_authenticity_admin_url() ) . '<br />' . __( 'You are free to create as many Authenticity terms you wish, but at least 2 are required (for valid referrals and for possible frauds)', 'referral-system-for-woocommerce' ),
 						'id'   => 'trswc_opt_authenticity',
 					),
