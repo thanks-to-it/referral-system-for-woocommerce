@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d0816300-61f1-41f2-8a45-b281a9b228e2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/classes/class-authenticity.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/classes/class-authenticity.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,7 +21,7 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="32" />
-          <entry key="project.open.time.0" value="25" />
+          <entry key="project.open.time.0" value="26" />
           <entry key="project.open.time.1" value="5" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="1" />
@@ -30,7 +29,7 @@
           <entry key="project.open.time.7" value="7" />
           <entry key="project.open.time.8" value="8" />
           <entry key="project.open.time.9" value="5" />
-          <entry key="project.opened" value="56" />
+          <entry key="project.opened" value="57" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -58,14 +57,14 @@
           <entry key="dummy" value="184" />
           <entry key="gitignore" value="6" />
           <entry key="json" value="225" />
-          <entry key="php" value="39237" />
+          <entry key="php" value="39242" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="64" />
           <entry key="JSON" value="225" />
-          <entry key="PHP" value="39173" />
+          <entry key="PHP" value="39178" />
           <entry key="PLAIN_TEXT" value="190" />
         </counts>
       </usages-collector>
@@ -97,8 +96,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/classes/class-authenticity.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="139" column="15" lean-forward="true" selection-start-line="139" selection-start-column="15" selection-end-line="139" selection-end-column="15" />
+            <state relative-caret-position="208">
+              <caret line="46" selection-start-line="46" selection-end-line="46" />
             </state>
           </provider>
         </entry>
@@ -106,7 +105,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/classes/admin/class-admin-settings.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="582">
+            <state relative-caret-position="5760">
               <caret line="367" column="150" selection-start-line="367" selection-start-column="150" selection-end-line="367" selection-end-column="150" />
             </state>
           </provider>
@@ -115,7 +114,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/classes/class-core.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2448">
+            <state relative-caret-position="2416">
               <caret line="159" column="115" selection-start-line="159" selection-start-column="115" selection-end-line="159" selection-end-column="115" />
               <folding>
                 <element signature="e#155#196#0#PHP" expanded="true" />
@@ -268,6 +267,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -297,12 +297,11 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../referral-system-for-woocommerce-pro" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
@@ -393,11 +392,12 @@
       <workItem from="1544709302779" duration="1204000" />
       <workItem from="1544741702849" duration="1666000" />
       <workItem from="1544751307638" duration="332000" />
+      <workItem from="1544753052791" duration="14000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="214639000" />
+    <option name="totallyTimeSpent" value="214653000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -410,8 +410,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.36034116" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.3640725" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -695,23 +696,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/class-core.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2448">
-          <caret line="159" column="115" selection-start-line="159" selection-start-column="115" selection-end-line="159" selection-end-column="115" />
-          <folding>
-            <element signature="e#155#196#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/classes/admin/class-admin-settings.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="367" column="150" selection-start-line="367" selection-start-column="150" selection-end-line="367" selection-end-column="150" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/referral-system-for-woocommerce.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
@@ -722,10 +706,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/admin/class-admin-settings.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5760">
+          <caret line="367" column="150" selection-start-line="367" selection-start-column="150" selection-end-line="367" selection-end-column="150" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/classes/class-core.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2416">
+          <caret line="159" column="115" selection-start-line="159" selection-start-column="115" selection-end-line="159" selection-end-column="115" />
+          <folding>
+            <element signature="e#155#196#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/classes/class-authenticity.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="139" column="15" lean-forward="true" selection-start-line="139" selection-start-column="15" selection-end-line="139" selection-end-column="15" />
+        <state relative-caret-position="208">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
         </state>
       </provider>
     </entry>
