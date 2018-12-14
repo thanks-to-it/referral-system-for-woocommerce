@@ -105,17 +105,11 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 		}
 
 		public function get_fraud_detection_data( \WC_Order $order, $referrer_id ) {
-			$referral_coupon = new Referral_Coupon();
-			$referrer        = new Referrer();
 			$referrer_user   = get_user_by( 'ID', $referrer_id );
 			$referrer_email  = $referrer_user->user_email;
-			$referrer_ip     = get_user_meta( $referrer_id, $referrer->usermeta['ip'], true );
-			$referrer_cookie = $referrer->get_cookie();
 
 			// Customer info
 			$customer_email = $order->get_billing_email();
-			$customer_ip    = $order->get_customer_ip_address();
-
 			$methods = $this->get_fraud_detection_methods();
 			$fraud_info = array();
 
@@ -124,7 +118,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Authenticity' ) ) {
 			}
 
 			foreach ( $methods as $method ) {
-				if ( true === apply_filters( 'trswc_fraud_detected', false, $method->id, $order, $referrer_id ) ) {
+				if ( true === apply_filters( 'trswc_fraud_detected', false, $method['id'], $order, $referrer_id ) ) {
 					$fraud_info[ $method['id'] ] = $this->get_fraud_detection_method( $method['id'] );
 				}
 			}
