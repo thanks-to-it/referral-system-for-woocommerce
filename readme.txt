@@ -1,77 +1,53 @@
-=== Pop-up Notices for WooCommerce ===
+=== Referral System for WooCommerce ===
 Contributors: karzin
-Tags: popup,notices,woocommerce,notice,modal
+Tags: referral,affiliate
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.0.8
+Stable tag: 1.0.0
 Requires PHP: 5.6.0
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Turn your WooCommerce Notices into Popups
+Turn your WooCommerce Coupons into Referral codes.
 
 == Description ==
 
-Notices are important messages WooCommerce displays on your store for customers, like:
+Increase your sales by letting your customers promote your site with this Referral plugin.
 
-* Product has been added to cart
-* Field Name is a required field
-* Have a coupon?
-* And so on...
+== How it works? ( A complete explanation ) ==
+Shop owners will be able to turn a WooCommerce Coupon into a Referral Code. A Referral Code is nothing more than a URL to your site with a custom parameter. Once new users visit your site through this URL and buy some product fulfilling the coupon requirements a new order will be generated and checked against some Fraud Detection methods, which results will be available on admin order page.
 
-And sometimes, depending on the theme, they get so discreet customers don't see it or there are cases where they are just too ugly.
+After order is complete, depending on the results and configuration, a new Referral will be created for the responsible Referrer that will be displayed on his **My Account** page. Along with other Referral info, there will be displayed an **Authenticity** status corresponding to **Fraud Detection** checking. If shop owner decide it's a reliable Referral, he can reward the Referrer with money.
 
-**Popup Notices for WooCommercee** adds WooCommerce Notices into beautiful Popups that will be noticed and appreciated.
+Each Referral Code can be configured with different rewards and coupon requirements.
+
+To become a Referrer, any user can simply check the **"Become a Referrer"** option that will be present on Registration form or on **My Account > Account Details** tab
+
+== How it works? ( A simple explanation ) ==
+* You will be able to set a default WooCommerce Coupon as a Referral Code
+
+* A Referral Code is nothing more than a URL to your site with a custom parameter
+
+* Customers set as Referrers will see the Referral Code visiting **My Account page**
+
+* Once new users visit your site through this URL and fulfil the coupon requirements, the referrer responsible for the URL will be rewarded with money
 
 == Frequently Asked Questions ==
 
-= Premium Version Features =
-* **Style options**
-Style the Popup the way you want with tons of options using the Customizer
-
-* **Hide default WooCommerce notices**
-As you can display all your notices as Popups, you can choose to simply hide the native WooCommerce notices if you want
-
-**Support**
-
-= Premium Version Link =
-[https://wpfactory.com/item/popup-notices-for-woocommerce/](https://wpfactory.com/item/popup-notices-for-woocommerce/)
-
 = How can I contribute? Is there a github repository? =
-If you are interested in contributing - head over to the [Popup Notices for WooCommerce plugin GitHub Repository](https://github.com/thanks-to-it/popup-notices-for-woocommerce) to find out how you can pitch in.
-
-= Micromodal Credits =
-
-* [Indrashish Ghosh](https://twitter.com/_ighosh)
-* [Kalpesh Singh](https://twitter.com/knowkalpesh)
-
-= Micromodal License =
-
-MIT License
-
-Copyright (c) 2017 Indrashish Ghosh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+If you are interested in contributing - head over to the [Popup Notices for WooCommerce plugin GitHub Repository](https://github.com/thanks-to-it/referral-system-for-woocommerce) to find out how you can pitch in.
 
 == Installation ==
 
-1. Upload the entire 'popup-notices-for-woocommerce' folder to the '/wp-content/plugins/' directory.
+1. Upload the entire 'referral-system-for-woocommerce' folder to the '/wp-content/plugins/' directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Start by visiting plugin settings at WooCommerce > Settings > Popup Notices.
+3. Start by visiting plugin settings at WooCommerce > Settings > Referral.
 
 == Screenshots ==
 
-1. An example of a WooCommerce Notice message on the Popup
-2. An example of WooCommerce Notice errors on the Popup
-3. An example of a WooCommerce Notice info on the Popup
-
 == Changelog ==
 
-= 1.0.0 - 11/12/2018 =
+= 1.0.0 - 15/12/2018 =
 * Initial Release.
 
 == Upgrade Notice ==

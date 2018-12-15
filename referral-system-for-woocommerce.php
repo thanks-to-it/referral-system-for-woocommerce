@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Referral System for WooCommerce
- * Description: Referral System for WooCommerce
+ * Description: Turn your WooCommerce Coupons into Referral codes.
  * Version: 1.0.0
  * Author: Thanks to IT
  * Author URI: https://github.com/thanks-to-it
