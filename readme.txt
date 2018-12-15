@@ -14,16 +14,16 @@ Turn your WooCommerce Coupons into Referral codes.
 
 Increase your sales by letting your customers promote your site with this Referral plugin.
 
-== How it works? ( A complete explanation ) ==
+== How it works? (A complete explanation) ==
 Shop owners will be able to turn a WooCommerce Coupon into a Referral Code. A Referral Code is nothing more than a URL to your site with a custom parameter. Once new users visit your site through this URL and buy some product fulfilling the coupon requirements a new order will be generated and checked against some Fraud Detection methods, which results will be available on admin order page.
 
 After order is complete, depending on the results and configuration, a new Referral will be created for the responsible Referrer that will be displayed on his **My Account** page. Along with other Referral info, there will be displayed an **Authenticity** status corresponding to **Fraud Detection** checking. If shop owner decide it's a reliable Referral, he can reward the Referrer with money.
 
-Each Referral Code can be configured with different rewards and coupon requirements.
+Each Referral Code can be configured with its own reward and coupon requirements.
 
 To become a Referrer, any user can simply check the **"Become a Referrer"** option that will be present on Registration form or on **My Account > Account Details** tab
 
-== How it works? ( A simple explanation ) ==
+== How it works? (A simple explanation) ==
 * You will be able to set a default WooCommerce Coupon as a Referral Code
 
 * A Referral Code is nothing more than a URL to your site with a custom parameter
