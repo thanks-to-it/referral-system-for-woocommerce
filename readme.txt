@@ -35,6 +35,8 @@ Increase your sales by letting your customers promote your site with this Referr
 
 * **Referrals** tab will display all the referrals
 
+* A referrer should fill up its payment details on **My Account > Account Details** page. After a Referral is considered reliable by the shop owner, the payment details can be used for the payment.
+
 
 == How it works? (A complete explanation) ==
 Shop owners will be able to turn a WooCommerce Coupon into a Referral Code, choosing what kind of Reward the Referrer will receive and the requirements for using the coupon. A Referral Code is nothing more than a URL pointing to your site with a custom parameter. Once new users visit your site through this URL and buy some product fulfilling the coupon requirements a new order will be generated and checked against some Fraud Detection methods. The results will be available on admin order page.
@@ -44,6 +46,8 @@ After order is complete, depending on the results and configuration, a new Refer
 Each Referral Code can be configured with its own reward and coupon requirements.
 
 To become a Referrer, any user can simply check the **"Become a Referrer"** option that will be present on Registration form or on **My Account > Account Details** tab
+
+Please read the FAQ if you have more questions.
 
 == Premium Version ==
 * More Reward Types
@@ -63,13 +67,20 @@ To become a Referrer, any user can simply check the **"Become a Referrer"** opti
 = How to become a Referrer? =
 To become a Referrer, any user can simply check the **"Become a Referrer"** option that will be present on Registration form or on **My Account > Account Details** tab
 
+= How the Referrer will receive its money? =
+A referrer should fill up its payment details on **My Account > Account Details** page.
+The shop owner has to transfer the money to the Referrer manually using the payment details or any other methods.
+
 = What is a Fraud Detection Method? =
 It's a mechanism that will try to prevent Referral frauds.
 The **Free version** of this plugin will have only one method that will check if the referrer and customer emails are the same.
 There will be more Fraud Detection methods on **Premium Version**
 
+= What is Referral Authenticity? =
+It's only a label that will be automatically set to a Referral depending on Fraud Detection checking.
+
 = How can I contribute? Is there a github repository? =
-If you are interested in contributing - head over to the [Popup Notices for WooCommerce plugin GitHub Repository](https://github.com/thanks-to-it/referral-system-for-woocommerce) to find out how you can pitch in.
+If you are interested in contributing - head over to the [Referral System for WooCommerce plugin GitHub Repository](https://github.com/thanks-to-it/referral-system-for-woocommerce) to find out how you can pitch in.
 
 == Installation ==
 
