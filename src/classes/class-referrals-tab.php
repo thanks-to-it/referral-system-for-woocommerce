@@ -63,6 +63,7 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
 			$referral_status = new Referral_Status();
 			$authenticity    = new Authenticity();
 			?>
+            <h3>Report</h3>
             <table class="my_account_orders">
                 <tr>
                     <thead>
@@ -84,9 +85,8 @@ if ( ! class_exists( 'ThanksToIT\RSWC\Referrals_Tab' ) ) {
                 <?php endforeach; ?>
                 </tbody>
             </table>
-
 			<?php if ( $the_query->have_posts() ) : ?>
-                <h3>Referrals</h3>
+
                 <table class="my_account_orders">
                     <tr>
                         <thead>
