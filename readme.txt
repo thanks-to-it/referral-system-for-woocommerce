@@ -92,7 +92,7 @@ If you are interested in contributing - head over to the [Referral System for Wo
 
 == Changelog ==
 
-= 1.0.0 - 15/12/2018 =
+= 1.0.0 - 18/12/2018 =
 * Initial Release.
 
 == Upgrade Notice ==

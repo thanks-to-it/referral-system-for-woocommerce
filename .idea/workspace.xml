@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d0816300-61f1-41f2-8a45-b281a9b228e2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
-    </list>
+    <list default="true" id="d0816300-61f1-41f2-8a45-b281a9b228e2" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +58,7 @@
           <entry key="gitignore" value="6" />
           <entry key="json" value="225" />
           <entry key="php" value="39280" />
-          <entry key="txt" value="4988" />
+          <entry key="txt" value="4989" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -68,7 +66,7 @@
           <entry key="HTML" value="64" />
           <entry key="JSON" value="225" />
           <entry key="PHP" value="39216" />
-          <entry key="PLAIN_TEXT" value="5178" />
+          <entry key="PLAIN_TEXT" value="5179" />
         </counts>
       </usages-collector>
     </session>
@@ -96,8 +94,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/readme.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="82" column="89" selection-start-line="82" selection-start-column="89" selection-end-line="82" selection-end-column="89" />
+            <state relative-caret-position="421">
+              <caret line="94" column="12" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -375,12 +373,12 @@
       <workItem from="1544829028573" duration="7060000" />
       <workItem from="1544987690266" duration="612000" />
       <workItem from="1545065167191" duration="1063000" />
-      <workItem from="1545181070826" duration="3054000" />
+      <workItem from="1545181070826" duration="3076000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="226699000" />
+    <option name="totallyTimeSpent" value="226721000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -708,8 +706,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/readme.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="82" column="89" selection-start-line="82" selection-start-column="89" selection-end-line="82" selection-end-column="89" />
+        <state relative-caret-position="421">
+          <caret line="94" column="12" selection-start-line="94" selection-start-column="12" selection-end-line="94" selection-end-column="12" />
         </state>
       </provider>
     </entry>
